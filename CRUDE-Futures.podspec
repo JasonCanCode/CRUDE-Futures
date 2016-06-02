@@ -31,6 +31,7 @@ Easily Create, Read, Update, Delete and Enumerate objects with the help of Alamo
   s.dependency 'Alamofire', '~> 3.4'
   s.dependency 'SwiftyJSON', '~> 2.3'
   s.dependency 'BrightFutures', '~> 4.1'
+  s.dependency 'Result', '~> 2.0'
 
 # s.resource_bundles = {
 #  'CRUDE-Futures' => ['CRUDEFutures/Assets.xcassets/*.png']
