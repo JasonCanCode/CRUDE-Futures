@@ -8,7 +8,7 @@
 
 import BrightFutures
 
-protocol CRUDEUpdatable: CRUDERequestable {
+public protocol CRUDEUpdatable: CRUDERequestable {
     var attributes: [String: AnyObject] { get }
     var updatePath: String { get }
     func updateOnServer() -> Future<Self, NSError>

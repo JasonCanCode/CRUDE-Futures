@@ -8,7 +8,7 @@
 
 import BrightFutures
 
-protocol CRUDEReadable: CRUDERequestable {
+public protocol CRUDEReadable: CRUDERequestable {
     var readPath: String { get }
     func readFromServer() -> Future<Self, NSError>
     static func readFromServerWithId(idNumber: Int) -> Future<Self, NSError>

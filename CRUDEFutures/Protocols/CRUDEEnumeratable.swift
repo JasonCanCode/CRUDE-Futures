@@ -8,7 +8,7 @@
 
 import BrightFutures
 
-protocol CRUDEEnumeratable: CRUDERequestable {
+public protocol CRUDEEnumeratable: CRUDERequestable {
     static var collectionKey: String { get }
     static var enumeratePath: String { get }
     static func enumerateFromServer(params: [String: AnyObject]?) -> Future<[Self], NSError>

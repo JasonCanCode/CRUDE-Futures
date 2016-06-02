@@ -6,7 +6,7 @@
 //  Copyright © 2016 Jason Welch. All rights reserved.
 //
 
-protocol CRUDERequestable: JSONConvertable {
+public protocol CRUDERequestable: JSONConvertable {
     var id: Int { get }
     static var path: String { get }
 }

@@ -8,7 +8,7 @@
 
 import BrightFutures
 
-protocol CRUDECreatable: CRUDERequestable {
+public protocol CRUDECreatable: CRUDERequestable {
     static var createPath: String { get }
     static func createOnServer(attributes: [String: AnyObject]) -> Future<Self, NSError>
     static func createOnServerOkay(attributes: [String: AnyObject]) -> Future<Okay, NSError>

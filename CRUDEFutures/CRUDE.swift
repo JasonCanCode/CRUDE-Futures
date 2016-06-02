@@ -10,14 +10,14 @@ import Alamofire
 import SwiftyJSON
 import BrightFutures
 
-typealias CRUDELog = (Alamofire.Method, Response<AnyObject, NSError>) -> Void
+public typealias CRUDELog = (Alamofire.Method, Response<AnyObject, NSError>) -> Void
 
 private var _baseURL = ""
 private var _headers: [String: String] = [:]
 private var _logResult: CRUDELog?
 private var _useGetParamatersInPath = true
 
-struct CRUDE {
+public struct CRUDE {
 
     static var baseURL: String {
         return _baseURL
@@ -154,4 +154,4 @@ struct CRUDE {
 }
 
 // represents an empty (positive) response
-struct Okay {}
+public struct Okay {}

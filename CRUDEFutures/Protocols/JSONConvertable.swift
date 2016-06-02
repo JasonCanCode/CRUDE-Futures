@@ -8,6 +8,6 @@
 
 import SwiftyJSON
 
-protocol JSONConvertable {
+public protocol JSONConvertable {
     init(_ json: JSON)
 }
