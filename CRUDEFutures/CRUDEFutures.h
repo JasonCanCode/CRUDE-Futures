@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Result/Result-Swift.h>
 
 //! Project version number for CRUDEFutures.
 FOUNDATION_EXPORT double CRUDEFuturesVersionNumber;
