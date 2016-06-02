@@ -15,13 +15,13 @@ public protocol CRUDEReadable: CRUDERequestable {
 }
 
 extension CRUDEReadable {
-    var readPath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
+    public var readPath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
-    func readFromServer() -> Future<Self, NSError> {
+    public func readFromServer() -> Future<Self, NSError> {
         return CRUDE.requestObject(.GET, readPath) as Future<Self, NSError>
     }
 
-    static func readFromServerWithId(idNumber: Int) -> Future<Self, NSError> {
+    public static func readFromServerWithId(idNumber: Int) -> Future<Self, NSError> {
         let path = CRUDE.baseURL + "\(Self.path)/\(idNumber)"
         return CRUDE.requestObject(.GET, path) as Future<Self, NSError>
     }

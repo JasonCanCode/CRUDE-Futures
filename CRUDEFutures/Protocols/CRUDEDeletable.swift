@@ -14,9 +14,9 @@ public protocol CRUDEDeletable: CRUDERequestable {
 }
 
 extension CRUDEDeletable {
-    var deletePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
+    public var deletePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
-    func deleteFromServer() -> Future<Okay, NSError> {
+    public func deleteFromServer() -> Future<Okay, NSError> {
         return CRUDE.requestForSuccess(.DELETE, deletePath)
     }
 }

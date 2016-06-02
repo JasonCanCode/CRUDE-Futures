@@ -19,38 +19,38 @@ private var _useGetParamatersInPath = true
 
 public struct CRUDE {
 
-    static var baseURL: String {
+    public static var baseURL: String {
         return _baseURL
     }
 
-    static var headers: [String: String] {
+    public static var headers: [String: String] {
         return _headers
     }
 
-    static func setBaseURL(baseURL: String) {
+    public static func setBaseURL(baseURL: String) {
         _baseURL = baseURL
     }
 
-    static func setHeaders(headers: [String: String]) {
+    public static func setHeaders(headers: [String: String]) {
         _headers = headers
     }
 
-    static func setRequestLoggingBlock(block: CRUDELog) {
+    public static func setRequestLoggingBlock(block: CRUDELog) {
         _logResult = block
     }
 
-    static func setParamatersShouldBePartOfPathForGet(shouldUse: Bool) {
+    public static func setParamatersShouldBePartOfPathForGet(shouldUse: Bool) {
         _useGetParamatersInPath = shouldUse
     }
 
-    static func configure(baseURL baseURL: String, headers: [String: String], paramatersShouldBePartOfPathForGet paramsInPath: Bool = true, requestLoggingBlock logResult: CRUDELog? = nil) {
+    public static func configure(baseURL baseURL: String, headers: [String: String], paramatersShouldBePartOfPathForGet paramsInPath: Bool = true, requestLoggingBlock logResult: CRUDELog? = nil) {
         _baseURL = baseURL
         _headers = headers
         _useGetParamatersInPath = paramsInPath
         _logResult = logResult
     }
 
-    static func request(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<JSON, NSError> {
+    public static func request(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -82,7 +82,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    static func requestObject<T: JSONConvertable>(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<T, NSError> {
+    public static func requestObject<T: JSONConvertable>(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
         request(method, urlString, parameters: parameters).onComplete { result in
@@ -96,7 +96,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    static func requestObjectsArrayWithKey<T: JSONConvertable>(key: String, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<[T], NSError> {
+    public static func requestObjectsArrayWithKey<T: JSONConvertable>(key: String, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
         request(method, urlString, parameters: parameters).onComplete { result in
@@ -110,7 +110,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    static func requestForSuccess(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<Okay, NSError> {
+    public static func requestForSuccess(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<Okay, NSError> {
         let promise = Promise<Okay, NSError>()
 
         request(.POST, urlString, parameters: parameters).onComplete { result in

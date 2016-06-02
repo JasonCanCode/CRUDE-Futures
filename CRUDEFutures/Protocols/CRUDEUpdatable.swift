@@ -16,13 +16,13 @@ public protocol CRUDEUpdatable: CRUDERequestable {
 }
 
 extension CRUDEUpdatable {
-    var updatePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
+    public var updatePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
-    func updateOnServer() -> Future<Self, NSError> {
+    public func updateOnServer() -> Future<Self, NSError> {
         return CRUDE.requestObject(.PUT, updatePath, parameters: attributes)
     }
 
-    func updateOnServerOkay() -> Future<Okay, NSError> {
+    public func updateOnServerOkay() -> Future<Okay, NSError> {
         return CRUDE.requestForSuccess(.PUT, updatePath)
     }
 }

@@ -15,9 +15,9 @@ public protocol CRUDEEnumeratable: CRUDERequestable {
 }
 
 extension CRUDEEnumeratable {
-    static var enumeratePath: String { return CRUDE.baseURL + Self.path }
+    public static var enumeratePath: String { return CRUDE.baseURL + Self.path }
 
-    static func enumerateFromServer(params: [String: AnyObject]? = nil) -> Future<[Self], NSError> {
+    public static func enumerateFromServer(params: [String: AnyObject]? = nil) -> Future<[Self], NSError> {
         return CRUDE.requestObjectsArrayWithKey(collectionKey, .GET, enumeratePath, parameters: params)
     }
 }
