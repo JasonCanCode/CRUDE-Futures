@@ -13,11 +13,11 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-CRUDE-Futures is available through [CocoaPods](http://cocoapods.org). To install
+CRUDE-Futures is NOT YET available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod "CRUDE-Futures"
+pod 'CRUDE-Futures', :git => 'https://github.com/JasonCanCode/CRUDE-Futures.git'
 ```
 
 ## Author
