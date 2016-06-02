@@ -20,6 +20,10 @@
 		CBE0078B1D009DD9006D366F /* CRUDERequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE007841D009DD9006D366F /* CRUDERequestable.swift */; };
 		CBE0078C1D009DD9006D366F /* CRUDEUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE007851D009DD9006D366F /* CRUDEUpdatable.swift */; };
 		CBE0078D1D009DD9006D366F /* JSONConvertable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE007861D009DD9006D366F /* JSONConvertable.swift */; };
+		CBE0079C1D00A2C3006D366F /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE007981D00A2C3006D366F /* Alamofire.framework */; };
+		CBE0079D1D00A2C3006D366F /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE007991D00A2C3006D366F /* BrightFutures.framework */; };
+		CBE0079E1D00A2C3006D366F /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0079A1D00A2C3006D366F /* Result.framework */; };
+		CBE0079F1D00A2C3006D366F /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +43,10 @@
 		CBE007841D009DD9006D366F /* CRUDERequestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRUDERequestable.swift; path = Protocols/CRUDERequestable.swift; sourceTree = "<group>"; };
 		CBE007851D009DD9006D366F /* CRUDEUpdatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CRUDEUpdatable.swift; path = Protocols/CRUDEUpdatable.swift; sourceTree = "<group>"; };
 		CBE007861D009DD9006D366F /* JSONConvertable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONConvertable.swift; path = Protocols/JSONConvertable.swift; sourceTree = "<group>"; };
+		CBE007981D00A2C3006D366F /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/Alamofire.framework"; sourceTree = "<group>"; };
+		CBE007991D00A2C3006D366F /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/BrightFutures.framework"; sourceTree = "<group>"; };
+		CBE0079A1D00A2C3006D366F /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/Result.framework"; sourceTree = "<group>"; };
+		CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CRUDEFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -47,6 +55,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBE0079C1D00A2C3006D366F /* Alamofire.framework in Frameworks */,
+				CBE0079D1D00A2C3006D366F /* BrightFutures.framework in Frameworks */,
+				CBE0079E1D00A2C3006D366F /* Result.framework in Frameworks */,
+				CBE0079F1D00A2C3006D366F /* SwiftyJSON.framework in Frameworks */,
 				27BE08BC19B3E795ACB92901 /* Pods_CRUDEFutures.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +69,10 @@
 		013400064F7353E43FEF3E8E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CBE007981D00A2C3006D366F /* Alamofire.framework */,
+				CBE007991D00A2C3006D366F /* BrightFutures.framework */,
+				CBE0079A1D00A2C3006D366F /* Result.framework */,
+				CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */,
 				D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */,
 			);
 			name = Frameworks;
