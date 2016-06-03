@@ -130,13 +130,13 @@
 		CBE0078E1D009DE6006D366F /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				CBE007861D009DD9006D366F /* JSONConvertable.swift */,
+				CBE007841D009DD9006D366F /* CRUDERequestable.swift */,
 				CBE007801D009DD9006D366F /* CRUDECreatable.swift */,
+				CBE007831D009DD9006D366F /* CRUDEReadable.swift */,
+				CBE007851D009DD9006D366F /* CRUDEUpdatable.swift */,
 				CBE007811D009DD9006D366F /* CRUDEDeletable.swift */,
 				CBE007821D009DD9006D366F /* CRUDEEnumeratable.swift */,
-				CBE007831D009DD9006D366F /* CRUDEReadable.swift */,
-				CBE007841D009DD9006D366F /* CRUDERequestable.swift */,
-				CBE007851D009DD9006D366F /* CRUDEUpdatable.swift */,
-				CBE007861D009DD9006D366F /* JSONConvertable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
