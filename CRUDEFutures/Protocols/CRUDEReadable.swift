@@ -10,19 +10,19 @@ import BrightFutures
 
 public protocol CRUDEReadable: CRUDERequestable {
     var readPath: String { get }
-    func readFromServer() -> Future<Self, NSError>
-    static func readFromServerWithId(idNumber: Int) -> Future<Self, NSError>
+    func readFromServer(queryItems: [String: AnyObject]?) -> Future<[Self], NSError>
+    static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]?) -> Future<Self, NSError>
 }
 
 extension CRUDEReadable {
     public var readPath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
-    public func readFromServer() -> Future<Self, NSError> {
-        return CRUDE.requestObject(.GET, readPath) as Future<Self, NSError>
+    public func readFromServer(queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
+        return CRUDE.requestObject(.GET, readPath, parameters: queryItems) as Future<Self, NSError>
     }
 
-    public static func readFromServerWithId(idNumber: Int) -> Future<Self, NSError> {
+    public static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
         let path = CRUDE.baseURL + "\(Self.path)/\(idNumber)"
-        return CRUDE.requestObject(.GET, path) as Future<Self, NSError>
+        return CRUDE.requestObject(.GET, path, parameters: queryItems) as Future<Self, NSError>
     }
 }
