@@ -15,11 +15,11 @@ public typealias CRUDELog = (Alamofire.Method, Response<AnyObject, NSError>) -> 
 private var _baseURL = ""
 private var _headers: [String: String] = [:]
 private var _logResult: CRUDELog?
-private var _useGetParamatersInPath = true
 
 public struct CRUDE {
 
     public static var baseURL: String {
+        assert(_baseURL != "", "The base URL needs to be set using CRUDE.config or CRUDE.setBaseURL")
         return _baseURL
     }
 
@@ -39,14 +39,9 @@ public struct CRUDE {
         _logResult = block
     }
 
-    public static func setParamatersShouldBePartOfPathForGet(shouldUse: Bool) {
-        _useGetParamatersInPath = shouldUse
-    }
-
-    public static func configure(baseURL baseURL: String, headers: [String: String], paramatersShouldBePartOfPathForGet paramsInPath: Bool = true, requestLoggingBlock logResult: CRUDELog? = nil) {
+    public static func configure(baseURL baseURL: String, headers: [String: String], requestLoggingBlock logResult: CRUDELog? = nil) {
         _baseURL = baseURL
         _headers = headers
-        _useGetParamatersInPath = paramsInPath
         _logResult = logResult
     }
 
@@ -55,14 +50,11 @@ public struct CRUDE {
         let promise = Promise<JSON, NSError>()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 
-        let uri = method != .GET && _useGetParamatersInPath
-            ? urlString
-            : String(urlString) + queryString(parameters)
-        let params = method != .GET && _useGetParamatersInPath
-            ? parameters
-            : nil
+        let encoding: ParameterEncoding = method != .GET
+            ? .JSON
+            : .URLEncodedInURL
 
-        Alamofire.request(method, uri, parameters: params, encoding: .JSON, headers: _headers)
+        Alamofire.request(method, urlString, parameters: parameters, encoding: encoding, headers: _headers)
             .responseJSON { network in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 _logResult?(method, network)
