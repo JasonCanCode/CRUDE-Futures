@@ -24,6 +24,7 @@
 		CBE0079D1D00A2C3006D366F /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE007991D00A2C3006D366F /* BrightFutures.framework */; };
 		CBE0079E1D00A2C3006D366F /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0079A1D00A2C3006D366F /* Result.framework */; };
 		CBE0079F1D00A2C3006D366F /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */; };
+		CBFE264F1D05BAB7008ADC81 /* CRUDEMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFE264E1D05BAB7008ADC81 /* CRUDEMappable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		CBE007991D00A2C3006D366F /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/BrightFutures.framework"; sourceTree = "<group>"; };
 		CBE0079A1D00A2C3006D366F /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/Result.framework"; sourceTree = "<group>"; };
 		CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/SwiftyJSON.framework"; sourceTree = "<group>"; };
+		CBFE264E1D05BAB7008ADC81 /* CRUDEMappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDEMappable.swift; sourceTree = "<group>"; };
 		D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CRUDEFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -137,6 +139,7 @@
 				CBE007851D009DD9006D366F /* CRUDEUpdatable.swift */,
 				CBE007811D009DD9006D366F /* CRUDEDeletable.swift */,
 				CBE007821D009DD9006D366F /* CRUDEEnumeratable.swift */,
+				CBFE264E1D05BAB7008ADC81 /* CRUDEMappable.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				CBE007881D009DD9006D366F /* CRUDEDeletable.swift in Sources */,
 				CBE0077D1D009DB6006D366F /* README.md in Sources */,
 				CBE0078C1D009DD9006D366F /* CRUDEUpdatable.swift in Sources */,
+				CBFE264F1D05BAB7008ADC81 /* CRUDEMappable.swift in Sources */,
 				CBE0077F1D009DC6006D366F /* CRUDE.swift in Sources */,
 				CBE0078D1D009DD9006D366F /* JSONConvertable.swift in Sources */,
 				CBE007871D009DD9006D366F /* CRUDECreatable.swift in Sources */,
