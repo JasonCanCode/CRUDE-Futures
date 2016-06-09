@@ -12,7 +12,7 @@ public protocol JSONAttributable {
 }
 
 extension JSONAttributable {
-    var validAttributes: [String: AnyObject] {
+    public var validAttributes: [String: AnyObject] {
         var validAttributes: [String: AnyObject] = [:]
         for case let (key, value?) in attributes {
             validAttributes[key] = value
