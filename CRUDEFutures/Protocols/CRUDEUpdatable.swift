@@ -9,17 +9,26 @@
 import BrightFutures
 
 public protocol CRUDEUpdatable: CRUDERequestable {
-    var attributes: [String: AnyObject] { get }
+    var id: Int { get }
+    var attributes: [String: AnyObject?] { get }
     var updatePath: String { get }
     func updateOnServer() -> Future<Self, NSError>
     func updateOnServerOkay() -> Future<Okay, NSError>
 }
 
 extension CRUDEUpdatable {
+    private var validAttributes: [String: AnyObject] {
+        var validAttributes: [String: AnyObject] = [:]
+        for case let (key, value?) in attributes {
+            validAttributes[key] = value
+        }
+        return validAttributes
+    }
+
     public var updatePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
     public func updateOnServer() -> Future<Self, NSError> {
-        return CRUDE.requestObject(.PUT, updatePath, parameters: attributes)
+        return CRUDE.requestObject(.PUT, updatePath, parameters: validAttributes)
     }
 
     public func updateOnServerOkay() -> Future<Okay, NSError> {

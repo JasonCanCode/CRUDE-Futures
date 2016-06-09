@@ -7,6 +7,5 @@
 //
 
 public protocol CRUDERequestable: JSONConvertable {
-    var id: Int { get }
     static var path: String { get }
 }

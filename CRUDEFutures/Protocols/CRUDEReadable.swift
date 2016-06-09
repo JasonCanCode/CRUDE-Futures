@@ -10,6 +10,7 @@ import BrightFutures
 
 public protocol CRUDEReadable: CRUDERequestable {
     var readPath: String { get }
+    var id: Int { get }
     func readFromServer(queryItems: [String: AnyObject]?) -> Future<Self, NSError>
     static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]?) -> Future<Self, NSError>
 }
