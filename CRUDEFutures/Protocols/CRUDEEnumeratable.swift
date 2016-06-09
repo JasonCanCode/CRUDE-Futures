@@ -9,12 +9,13 @@
 import BrightFutures
 
 public protocol CRUDEEnumeratable: CRUDERequestable {
-    static var collectionKey: String { get }
+    static var collectionKey: String? { get }
     static var enumeratePath: String { get }
     static func enumerateFromServer(queryItems: [String: AnyObject]?) -> Future<[Self], NSError>
 }
 
 extension CRUDEEnumeratable {
+    static var collectionKey: String? { return nil }
     public static var enumeratePath: String { return CRUDE.baseURL + Self.path }
 
     public static func enumerateFromServer(queryItems: [String: AnyObject]? = nil) -> Future<[Self], NSError> {

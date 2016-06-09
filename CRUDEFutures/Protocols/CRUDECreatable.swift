@@ -18,7 +18,7 @@ extension CRUDECreatable {
     public static var createPath: String { return CRUDE.baseURL + path }
 
     public static func createOnServer(attributes: [String: AnyObject]) -> Future<Self, NSError> {
-        return CRUDE.requestObject(.POST, createPath, parameters: attributes) as Future<Self, NSError>
+        return CRUDE.requestObject(.POST, createPath, parameters: attributes, key: objectKey) as Future<Self, NSError>
     }
 
     public static func createOnServerOkay(attributes: [String: AnyObject]) -> Future<Okay, NSError> {

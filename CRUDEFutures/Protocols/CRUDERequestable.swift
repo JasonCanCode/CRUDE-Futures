@@ -8,4 +8,9 @@
 
 public protocol CRUDERequestable: JSONConvertable {
     static var path: String { get }
+    static var objectKey: String? { get }
+}
+
+extension CRUDERequestable {
+    static var objectKey: String? { return nil }
 }

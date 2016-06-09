@@ -19,11 +19,11 @@ extension CRUDEReadable {
     public var readPath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
     public func readFromServer(queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
-        return CRUDE.requestObject(.GET, readPath, parameters: queryItems) as Future<Self, NSError>
+        return CRUDE.requestObject(.GET, readPath, parameters: queryItems, key: Self.objectKey) as Future<Self, NSError>
     }
 
     public static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
         let path = CRUDE.baseURL + "\(Self.path)/\(idNumber)"
-        return CRUDE.requestObject(.GET, path, parameters: queryItems) as Future<Self, NSError>
+        return CRUDE.requestObject(.GET, path, parameters: queryItems, key: objectKey) as Future<Self, NSError>
     }
 }

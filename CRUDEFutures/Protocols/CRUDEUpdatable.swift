@@ -19,7 +19,7 @@ extension CRUDEUpdatable {
     public var updatePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
     public func updateOnServer() -> Future<Self, NSError> {
-        return CRUDE.requestObject(.PUT, updatePath, parameters: validAttributes)
+        return CRUDE.requestObject(.PUT, updatePath, parameters: validAttributes, key: Self.objectKey)
     }
 
     public func updateOnServerOkay() -> Future<Okay, NSError> {

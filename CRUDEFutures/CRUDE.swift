@@ -74,7 +74,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    public static func requestObject<T: JSONConvertable>(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<T, NSError> {
+    public static func requestObject<T: JSONConvertable>(method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, key: String? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
         request(method, urlString, parameters: parameters).onComplete { result in
@@ -82,27 +82,15 @@ public struct CRUDE {
                 promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
                 return
             }
-            let object = T(json)
+            let object = key != nil
+                ? T(json[key!])
+                : T(json)
             promise.success(object)
         }
         return promise.future
     }
 
-    public static func requestObjectWithKey<T: JSONConvertable>(key: String, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<T, NSError> {
-        let promise = Promise<T, NSError>()
-
-        request(method, urlString, parameters: parameters).onComplete { result in
-            guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
-                return
-            }
-            let object = T(json[key])
-            promise.success(object)
-        }
-        return promise.future
-    }
-
-    public static func requestObjectsArrayWithKey<T: JSONConvertable>(key: String, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<[T], NSError> {
+    public static func requestObjectsArrayWithKey<T: JSONConvertable>(key: String?, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
         request(method, urlString, parameters: parameters).onComplete { result in
@@ -110,7 +98,10 @@ public struct CRUDE {
                 promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
                 return
             }
-            let objectsArray = json[key].arrayValue.map { T($0) }
+            let objectJSON = key != nil
+                ? json[key!]
+                : json
+            let objectsArray = objectJSON.arrayValue.map { T($0) }
             promise.success(objectsArray)
         }
         return promise.future
