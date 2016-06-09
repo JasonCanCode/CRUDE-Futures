@@ -88,6 +88,20 @@ public struct CRUDE {
         return promise.future
     }
 
+    public static func requestObjectWithKey<T: JSONConvertable>(key: String, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<T, NSError> {
+        let promise = Promise<T, NSError>()
+
+        request(method, urlString, parameters: parameters).onComplete { result in
+            guard let json = result.value else {
+                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                return
+            }
+            let object = T(json[key])
+            promise.success(object)
+        }
+        return promise.future
+    }
+
     public static func requestObjectsArrayWithKey<T: JSONConvertable>(key: String, _ method: Alamofire.Method, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
