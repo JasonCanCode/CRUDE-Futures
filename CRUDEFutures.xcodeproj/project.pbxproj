@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		27BE08BC19B3E795ACB92901 /* Pods_CRUDEFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */; };
+		CB0D4F8B1D09DAC400FDBF61 /* JSONAttributable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */; };
 		CB9C7D8E1D009CDD0058EEA3 /* CRUDEFutures.h in Headers */ = {isa = PBXBuildFile; fileRef = CB9C7D8D1D009CDD0058EEA3 /* CRUDEFutures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBE0077B1D009DB6006D366F /* CRUDE-Futures.podspec in Resources */ = {isa = PBXBuildFile; fileRef = CBE007781D009DB6006D366F /* CRUDE-Futures.podspec */; };
 		CBE0077C1D009DB6006D366F /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CBE007791D009DB6006D366F /* LICENSE */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		2BAC493EF3E177C44D7FB971 /* Pods-CRUDEFutures.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.release.xcconfig"; sourceTree = "<group>"; };
 		750F85DEFB2F47CA1907B5F1 /* Pods-CRUDEFutures.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.debug.xcconfig"; sourceTree = "<group>"; };
+		CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONAttributable.swift; path = Protocols/JSONAttributable.swift; sourceTree = "<group>"; };
 		CB9C7D8A1D009CDC0058EEA3 /* CRUDEFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CRUDEFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB9C7D8D1D009CDD0058EEA3 /* CRUDEFutures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRUDEFutures.h; sourceTree = "<group>"; };
 		CB9C7D8F1D009CDD0058EEA3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				CBE007861D009DD9006D366F /* JSONConvertable.swift */,
+				CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */,
 				CBE007841D009DD9006D366F /* CRUDERequestable.swift */,
 				CBE007801D009DD9006D366F /* CRUDECreatable.swift */,
 				CBE007831D009DD9006D366F /* CRUDEReadable.swift */,
@@ -267,6 +270,7 @@
 				CBFE264F1D05BAB7008ADC81 /* CRUDEMappable.swift in Sources */,
 				CBE0077F1D009DC6006D366F /* CRUDE.swift in Sources */,
 				CBE0078D1D009DD9006D366F /* JSONConvertable.swift in Sources */,
+				CB0D4F8B1D09DAC400FDBF61 /* JSONAttributable.swift in Sources */,
 				CBE007871D009DD9006D366F /* CRUDECreatable.swift in Sources */,
 				CBE0078A1D009DD9006D366F /* CRUDEReadable.swift in Sources */,
 			);
