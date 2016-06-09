@@ -12,5 +12,5 @@ public protocol CRUDERequestable: JSONConvertable {
 }
 
 extension CRUDERequestable {
-    static var objectKey: String? { return nil }
+    public static var objectKey: String? { return nil }
 }
