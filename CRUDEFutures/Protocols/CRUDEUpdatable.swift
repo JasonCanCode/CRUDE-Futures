@@ -17,21 +17,25 @@ public protocol CRUDEUpdatable: CRUDERequestable {
 }
 
 extension CRUDEUpdatable {
-    private var validAttributes: [String: AnyObject] {
-        var validAttributes: [String: AnyObject] = [:]
-        for case let (key, value?) in attributes {
-            validAttributes[key] = value
-        }
-        return validAttributes
-    }
-
     public var updatePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
     public func updateOnServer() -> Future<Self, NSError> {
-        return CRUDE.requestObject(.PUT, updatePath, parameters: validAttributes)
+        return CRUDE.requestObject(.PUT, updatePath, parameters: validateAttributes(attributes))
     }
 
     public func updateOnServerOkay() -> Future<Okay, NSError> {
         return CRUDE.requestForSuccess(.PUT, updatePath)
+    }
+
+    private func validateAttributes(attributes: [String: AnyObject?]) -> [String: AnyObject]? {
+        var validAttributes: [String: AnyObject] = [:]
+        for case let (key, value?) in attributes {
+            if let subAttributes = value as? [String: AnyObject?], newValue = validateAttributes(subAttributes) {
+                validAttributes[key] = newValue
+            } else {
+                validAttributes[key] = value
+            }
+        }
+        return validAttributes
     }
 }
