@@ -149,6 +149,3 @@ public struct CRUDE {
         return "?\(keyValueStrings.joinWithSeparator("&"))"
     }
 }
-
-// represents an empty (positive) response
-public struct Okay {}
