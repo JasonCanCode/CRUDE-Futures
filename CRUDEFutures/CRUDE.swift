@@ -35,7 +35,7 @@ public struct CRUDE {
         _headers = headers
     }
 
-    public static func setHeaderValue(value: String, forKey key: String) {
+    public static func setHeaderValue(value: String?, forKey key: String) {
         _headers[key] = value
     }
 
