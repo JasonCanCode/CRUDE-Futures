@@ -35,6 +35,10 @@ public struct CRUDE {
         _headers = headers
     }
 
+    public static func setHeaderValue(value: String, forKey key: String) {
+        _headers[key] = value
+    }
+
     public static func setRequestLoggingBlock(block: CRUDELog) {
         _logResult = block
     }
