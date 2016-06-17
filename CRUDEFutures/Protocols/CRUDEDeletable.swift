@@ -8,7 +8,8 @@
 
 import BrightFutures
 
-public protocol CRUDEDeletable: CRUDERequestable {
+public protocol CRUDEDeletable {
+    static var path: String { get }
     var id: Int { get }
     var deletePath: String { get }
     func deleteFromServer() -> Future<Okay, NSError>
