@@ -111,10 +111,10 @@ public struct CRUDE {
         return promise.future
     }
 
-    public static func requestForSuccess(method: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<Okay, NSError> {
+    public static func requestForSuccess(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<Okay, NSError> {
         let promise = Promise<Okay, NSError>()
 
-        request(.POST, urlString, parameters: parameters).onComplete { result in
+        request(requestType, urlString, parameters: parameters).onComplete { result in
             if let error = result.error {
                 promise.failure(error)
             } else {
