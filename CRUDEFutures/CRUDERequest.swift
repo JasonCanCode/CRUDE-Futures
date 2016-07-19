@@ -17,20 +17,20 @@ public struct CRUDERequest {
     public var headers: [String: String]? = nil
     private var request: Request? = nil
 
-    public mutating func makeRequestForJSON(method: Alamofire.Method) -> Future<JSON, NSError> {
+    public mutating func makeRequestForJSON(requestType: CRUDERequestType) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
 
-        let encoding: ParameterEncoding = method != .GET
+        let encoding: ParameterEncoding = requestType != .GET
             ? .JSON
             : .URLEncodedInURL
         let headers = self.headers ?? CRUDE.headers
 
-        request = Alamofire.request(method, urlString, parameters: parameters, encoding: encoding, headers: headers)
+        request = Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: headers)
         request!.responseJSON { network in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            _logResult?(method, network)
+            _logResult?(requestType, network)
 
             guard let response = network.response else {
                 promise.failure(CRUDE.errorFromResponse(network))
@@ -47,10 +47,10 @@ public struct CRUDERequest {
         return promise.future
     }
 
-    public mutating func makeRequestForObject<T: JSONConvertable>(method: Alamofire.Method, key: String? = nil) -> Future<T, NSError> {
+    public mutating func makeRequestForObject<T: JSONConvertable>(requestType: CRUDERequestType, key: String? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
-        makeRequestForJSON(method).onComplete { result in
+        makeRequestForJSON(requestType).onComplete { result in
             guard let json = result.value else {
                 promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
                 return
@@ -63,10 +63,10 @@ public struct CRUDERequest {
         return promise.future
     }
 
-    public mutating func makeRequestForObjectsArray<T: JSONConvertable>(method: Alamofire.Method, withKey key: String? = nil) -> Future<[T], NSError> {
+    public mutating func makeRequestForObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, withKey key: String? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
-        makeRequestForJSON(method).onComplete { result in
+        makeRequestForJSON(requestType).onComplete { result in
             guard let json = result.value else {
                 promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
                 return
