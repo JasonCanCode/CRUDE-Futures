@@ -14,7 +14,7 @@ public typealias CRUDELog = (Alamofire.Method, Response<AnyObject, NSError>) -> 
 
 private var _baseURL = ""
 private var _headers: [String: String] = [:]
-private var _logResult: CRUDELog?
+internal var _logResult: CRUDELog?
 
 public struct CRUDE {
 
@@ -124,7 +124,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    private static func errorFromResponse(network: Response<AnyObject, NSError>, _ parameters: [String: AnyObject]? = nil) -> NSError {
+    internal static func errorFromResponse(network: Response<AnyObject, NSError>, _ parameters: [String: AnyObject]? = nil) -> NSError {
         guard let response = network.response, request = network.request else {
             return NSError(domain: "Unknown Error", code: 600, userInfo: nil)
         }
