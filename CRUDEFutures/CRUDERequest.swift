@@ -17,6 +17,12 @@ public struct CRUDERequest {
     public var headers: [String: String]? = nil
     private var request: Request? = nil
 
+    public init(urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, headers: [String: String]? = nil) {
+        self.urlString = urlString
+        self.parameters = parameters
+        self.headers = headers
+    }
+
     public mutating func makeRequestForJSON(requestType: CRUDERequestType) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
