@@ -31,6 +31,7 @@ The first and most important step is setting up CRUDE for use in your app. `impo
 For example:
 
 ```swift
+// AppDelegate
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders)
 ```
 
@@ -89,7 +90,7 @@ Look at that! We even sorted them by their first names all on one line! If you a
 
 If you have a model that is going to be doing all the things, you can use `CRUDEMappable` in lieu of listing out all five.
 
-## The Write Way
+## Updating Attributes - The Write Way
 
 For updating your remote database with an entity, it will need to be `JSONAttributable`. This means it has an inverse mapping of its properties.
 
@@ -133,11 +134,11 @@ self.person.readFromServer().onSuccess { person in
 }.onFailure { error in
     print(error)
 }.onComplete { _ in
-    self.stopLoading()
+    self.refreshControl?.endRefreshing()
 }
 ```
 
-As you can see, `.onComplete` provides a raw `Result` but you can dump that if you just want to use this block for clean up code.
+Notice that while `.onComplete` provides a raw `Result`, you can dump that if you just want to use this block for clean up code. In this example, we update the view's refreshControl whether the load was successful or not.
 
 The mappable protocols provide convenience requests for you the explicitly call based on your intent, but you do have access the underlying requests that they use. The most basic method is `request`, which will give you a Future with a JSON object.
 
@@ -180,7 +181,7 @@ static var enumeratePath: String {
 
 _Remember: **Always set `path`**, providing specific paths if you have any edge cases._
 
-## Super Controlling
+## Controlling Requests
 
 If you want to be able to control the request traffic itself, you can use `CRUDERequest` objects instead of the `CRUDE` static methods. 
 
