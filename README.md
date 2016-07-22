@@ -204,7 +204,7 @@ Just use [Alamofire](http://cocoapods.org/pods/Alamofire), [SwiftyJSON](http://c
 
 ## Author
 
-Jason Welch, jwelch@groupon.com
+Jason Welch, jasonpwelch@yahoo.com
 
 ## License
 
