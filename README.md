@@ -76,7 +76,7 @@ struct Person: CRUDEReadable {
     }
 }
 ```
-NOTE: While you don't need the `id` property for creating and enumerating models, it is required for `CRUDEReadable`, `CRUDEUpdatable`, and `CRUDEDeletable`. This is to automatically infer url paths. For example, requesting a person with the id number `12345` would go out to "https://mysite.com/api/people/12345". You can override this path if you like (explained later) but the `id` requirement remains.
+**NOTE**: While you don't need the `id` property for creating and enumerating models, it is required for `CRUDEReadable`, `CRUDEUpdatable`, and `CRUDEDeletable`. This is to automatically infer url paths. For example, requesting a person with the id number `12345` would go out to "https://mysite.com/api/people/12345". You can override this path if you like (explained later) but the `id` requirement remains.
 
 Yes, you have to do all that one to one mapping but it can pay off. Let's say you have a `Household` entity that has several people. It can map its `people` attribute like so:
 ```swift
@@ -164,7 +164,7 @@ As mentioned earlier, all this is done automatically with the use of `path`. How
 
 ## Super Controlling
 
-If you want to be able to control the the request traffic itself, you can use a `CRUDERequest` objects instead of the `CRUDE` static methods. NOTE: You still need to have configured `CRUDE`.
+If you want to be able to control the the request traffic itself, you can use a `CRUDERequest` objects instead of the `CRUDE` static methods. **NOTE: _You still need to have configured `CRUDE`._**
 
 Initialize a `CRUDERequest` instance the same way you would use the request function. The `urlString` is a must, with the option to provide `parameters` and/or `headers`. To execute the request, you have three options very similar to the three basic `CRUDE` static functions...
 
