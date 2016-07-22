@@ -94,7 +94,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    public static func requestObjectsArrayWithKey<T: JSONConvertable>(key: String?, _ requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<[T], NSError> {
+    public static func requestObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, key: String? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in

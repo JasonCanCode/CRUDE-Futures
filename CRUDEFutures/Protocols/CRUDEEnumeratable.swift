@@ -19,6 +19,6 @@ extension CRUDEEnumeratable {
     public static var enumeratePath: String { return CRUDE.baseURL + Self.path }
 
     public static func enumerateFromServer(queryItems: [String: AnyObject]? = nil) -> Future<[Self], NSError> {
-        return CRUDE.requestObjectsArrayWithKey(collectionKey, .GET, enumeratePath, parameters: queryItems)
+        return CRUDE.requestObjectsArray(.GET, enumeratePath, parameters: queryItems, key: collectionKey)
     }
 }
