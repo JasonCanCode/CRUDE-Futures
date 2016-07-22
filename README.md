@@ -7,7 +7,7 @@
 
 Your data models can be easily Created, Read, Updated, Deleted, and Enumerated from a remote server simply by inheriting from CRUDE's various protocols. CRUDE-Futures leverages [BrightFutures](http://cocoapods.org/pods/BrightFutures) to asychronously load your data models, making requests with the help of [Alamofire](http://cocoapods.org/pods/Alamofire) and mapping the returned JSON with [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON). 
 
-_Please note, CRUDE will only work for API calls returning JSON._
+#### _Please note, CRUDE will only work for API calls returning JSON._
 
 ## Requirements
 
@@ -34,7 +34,7 @@ For example:
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders)
 ```
 
-If you would like CRUDE to do some kind of logging whenever API calls are made, you can provide a `CRUDELog` block. This can be done through a variable...
+If you would like CRUDE to do some kind of logging whenever API calls are made, you can provide a `CRUDELog` block. This can be done through a variable:
 
 ```swift
 let myLogger: CRUDELog = { method, response in
@@ -44,7 +44,7 @@ let myLogger: CRUDELog = { method, response in
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders, requestLoggingBlock: myLogger)
 ```
 
-...or by providing the block at the end of your configure call.
+...or by providing the block at the end of your configure call:
 
 ```swift
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders) { method, response in
@@ -58,7 +58,7 @@ While CRUDE is intended for use with structs, it can be used with classes and ev
 
 The first thing you need to do is import `CRUDE_Futures` and `SwiftyJSON`. Then you state how you intend to you use your model by applying any number of protocols. For a read-only model, you might just use `CRUDEReadable` or maybe add `CRUDEEnumeratable` if you want to retrieve a bunch at a time. Data entities can be created and destroyed through the use of `CRUDECreatable` and `CRUDEDeletable`. If you want modify your entities and demand that the server conforms to the new reality you have forged, you can do so with `CRUDEUpdatable`.
 
-All of these different protocols conform to `CRUDERequestable`, which require a model to set its `path` string to let CRUDE where those models can typically be found. For example `static let path = "people"` will tell CRUDE to send requests to "https://mysite.com/api/people". Optionally, a model can also set an `objectKey` string whenever the returning JSON has encased all the precious attributes in dictionary with a single key. If you do not set this in your model, it will default to `nil`.
+All of these different protocols conform to `CRUDERequestable`, which require a model to set its `path` string to let CRUDE know where those models can typically be found. For example `static let path = "people"` will tell CRUDE to send requests to "https://mysite.com/api/people". Optionally, a model can also set an `objectKey` string to use whenever the returning JSON has encased all the precious attributes in dictionary with a single key. If you do not set this in your model, it will default to `nil`.
 
 In order to easily convert some JSON into a nifty model, it needs to be `JSONConvertable`. This means it can be initialized by passing it a `JSON` object. Here is what a Person model object might look like:
 
@@ -81,13 +81,13 @@ struct Person: CRUDEReadable {
 ```
 **NOTE**: While you don't need the `id` property for creating and enumerating models, it is required for `CRUDEReadable`, `CRUDEUpdatable`, and `CRUDEDeletable`. This is to automatically infer url paths. For example, requesting a person with the id number `12345` would go out to "https://mysite.com/api/people/12345". You can override this path if you like (explained later) but the `id` requirement remains.
 
-Yes, you have to do all that one to one mapping but it can pay off. Let's say you have a `Household` entity that has several people. It can map its `people` attribute like so:
+Yes, you do have to do all of that one-toone mapping but it can pay off. Let's say you have a `Household` entity that has several people. It can map its `people` attribute like so:
 ```swift
     people = json["people"].array?.map { Person($0) }.sort { $0.firstName < $1.firstName} ?? []
 ```
-Look at that! We even sorted them by their first names, all on one line! If you are going to making all of your requests and mapping through `Household` and not `Person`, you can have `Person` just adhere to `JSONConvertable`.
+Look at that! We even sorted them by their first names all on one line! If you are going to making all of your requests and mapping through `Household` and not `Person`, you can have `Person` just adhere to `JSONConvertable`.
 
-If you have a model that is going to be doing all the things, you can use `CRUDEMappable` in lieu of the listing out all five.
+If you have a model that is going to be doing all the things, you can use `CRUDEMappable` in lieu of listing out all five.
 
 ## The Write Way
 
@@ -104,26 +104,28 @@ var attributes: [String : AnyObject?] {
 }
 ```
 
-Notice that `attributes` contains optional objects. `JSONAttributable` provides a computed property called `validAttributes` that will automatically remove attributes that don't have values, like potentially `favoriteColor`. In the example of the `Household` model, an entity would contain `"people": people.map { $0.validAttributes }` when computing its `attributes`.
+Notice that `attributes` contains optional objects. `JSONAttributable` provides a computed property called `validAttributes` that will automatically remove attributes that don't have values, like potentially `favoriteColor`.
+
+In the example of the `Household` model, an entity would contain `"people": people.map { $0.validAttributes }` when computing its `attributes`.
 
 ## Getting the Okay
 
-`Okay` is an empty object whose sole purpose is the have something to return `.onSuccess`. This is used any model that is `CRUDEDeletable`, since there shouldn't be any mappable JSON coming back from a .DELETE request.
+`Okay` is an empty object with the sole purpose to have something to return `.onSuccess`. This is used by any model that is `CRUDEDeletable`, since there shouldn't be any mappable JSON coming back from a DELETE request.
 
 If you want to make a request and you don't care what is coming back from the server you can use `CRUDE.requestForSuccess`, which will also return an `Okay`.
 
 ## Making the Call
 
-So what does an API call look like? Some protocols provide static requests, some instance requests, and some both. For instance if you want to get a new person with an id number of 12345...
+So what does an API call look like? Some protocols provide static requests, some instance requests, and some both. For instance if you want to get a new person with an id number of 12345:
 ```swift
 Person.readFromServerWithId(12345)
 ```
-...or if you have that person and you just want to make sure you have to most up-to-date version...
+...or if you have that person and you just want to make sure you have to most up-to-date version:
 ```swift
 self.person.readFromServer()
 ```
 
-Keep in mind that CRUDE does not mutate entities when making requests. Rather it provides a new entity upon completion. Asynchronous calls are handled using the BrightFutures syntax, so a retrieval of the newest version of a person might look like this:
+Keep in mind that CRUDE does not mutate entities when making these requests. Rather it provides a new entity upon completion. Asynchronous calls are handled using the BrightFutures syntax, so a retrieval of the newest version of a person might look like this:
 
 ```swift
 self.person.readFromServer().onSuccess { person in
@@ -137,16 +139,16 @@ self.person.readFromServer().onSuccess { person in
 
 As you can see, `.onComplete` provides a raw `Result` but you can dump that if you just want to use this block for clean up code.
 
-The mappable protocols provide convenience requests for you the explicitly call based on your intent, but you have access the underlying requests that they use. The most basic method is simply `request` which will give you a Future with a JSON object.
+The mappable protocols provide convenience requests for you the explicitly call based on your intent, but you do have access the underlying requests that they use. The most basic method is `request`, which will give you a Future with a JSON object.
 
 ```swift
 CRUDE.request(.GET, CRUDE.baseURL + "person/\(self.person.id)")
 ```
 
-If you would like the control of a direct request but don't want the hassle of converting that JSON into an entity, you can use `requestObject` for one or `requestObjectsArray` for a collection. Just make sure you cast the returning Future with the desired object.
+If you would like the control of a direct request but don't want the hassle of converting that JSON into an entity, you can use `requestObject` for one entity or `requestObjectsArray` for an array of entities. Just make sure you cast the returning Future with the desired object.
 
 ```swift
-let request = CRUDE.requestObject(.GET, CRUDE.baseURL + "person/\(self.person.id)", parameters: queryItems) as Future<[Person], NSError>
+let request = CRUDE.requestObjectsArray(.GET, CRUDE.baseURL + "person/\(self.person.id)", parameters: queryItems) as Future<[Person], NSError>
 
 request.onSuccess { people in
     self.household.people = people
@@ -163,11 +165,26 @@ CRUDE assumes a simple API structure in which requests relating to a model are m
 * Delete => DELETE request to "https://mysite.com/api/people/12345"
 * Enumerate => GET request to "https://mysite.com/api/people"
 
-As mentioned earlier, all this is done automatically with the use of `path`. However, your API may not be quite so simple. Perhaps an update goes to "https://mysite.com/api/households/people/12345" and retrieving a specific person comes from "https://mysite.com/api/person/12345". Each of the five protocols has a specific path that you can override for requests of that type. So in this scenario, you would set a value for `updatePath` and `readPath`, letting `path` handle the other three cases.
+As mentioned earlier, all of this is done automatically with the use of `path`. However, your API may not be quite so simple. Perhaps an update goes to "https://mysite.com/api/household/people/12345" and retrieving a specific person comes from "https://mysite.com/api/person/12345". Each of the five protocols has a specific path that you can set for requests of that type. So in this scenario, you would set a value for `updatePath` and `readPath`, letting `path` handle the other three cases.
+
+You can set a specific path staticly:
+```swift
+static let enumeratePath = CRUDE.baseURL + "/household/people"
+```
+...or dynamically:
+```swift
+static var enumeratePath: String {
+    return CRUDE.baseURL + "/households/\(householdID)/people"
+}
+```
+
+_Remember: Always set `path` and provide specific paths if you have any edge cases._
 
 ## Super Controlling
 
-If you want to be able to control the the request traffic itself, you can use a `CRUDERequest` objects instead of the `CRUDE` static methods. **NOTE: _You still need to have configured `CRUDE`._**
+If you want to be able to control the request traffic itself, you can use `CRUDERequest` objects instead of the `CRUDE` static methods. 
+
+**NOTE: _You still need to configure CRUDE in your AppDelegate first._**
 
 Initialize a `CRUDERequest` instance the same way you would use the request function. The `urlString` is a must, with the option to provide `parameters` and/or `headers`. To execute the request, you have three options very similar to the three basic `CRUDE` static functions...
 
@@ -176,6 +193,8 @@ Initialize a `CRUDERequest` instance the same way you would use the request func
 * `makeRequestForObjectsArray<T: JSONConvertable>` instead of `requestObjectsArray<T: JSONConvertable>`
 
 While the request is running, you can use `pauseRequest()` to take a break. Then either `resumeRequest()` later or give up on it and `cancelRequest()`.
+
+_NOTE: Unlike the convenience requests made through the static function and protocols, a `CRUDERequest` object IS mutated when executing a request. A reference to its Alamofire request is updated to allow manipulation of the request later on._
 
 ## Author
 
