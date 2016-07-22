@@ -200,7 +200,7 @@ If you want do even more of the work yourself...well then you probably shouldn't
 
 Just use [Alamofire](http://cocoapods.org/pods/Alamofire), [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON), and [BrightFutures](http://cocoapods.org/pods/BrightFutures). That is what I did in order to put together a bunch of tools you aren't going to use. 
 
-##### ..* Disclaimer: The Melting Pot provides a unique dining experience that is as much about the atmosphere as it is the food.
+###### _Disclaimer: The Melting Pot provides a unique dining experience that is as much about the atmosphere as it is the food._
 
 ## Author
 
