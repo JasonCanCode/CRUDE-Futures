@@ -10,10 +10,10 @@ Your data models can be easily Created, Read, Updated, Deleted, and Enumerated f
 ## Requirements
 
 Crude-Futures currently requires the following pods...
-[Alamofire](http://cocoapods.org/pods/Alamofire) version 3.4 or greater
-[SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON) version 2.3 or greater
-[BrightFutures](http://cocoapods.org/pods/BrightFutures) version 4.1 or greater
-[Result](http://cocoapods.org/pods/Result) version 2.0 or greater
+*[Alamofire](http://cocoapods.org/pods/Alamofire) version 3.4 or greater
+*[SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON) version 2.3 or greater
+*[BrightFutures](http://cocoapods.org/pods/BrightFutures) version 4.1 or greater
+*[Result](http://cocoapods.org/pods/Result) version 2.0 or greater
 
 ## Installation
 
@@ -84,7 +84,7 @@ Yes, you have to do all that one to one mapping but it can pay off. Let's say yo
 ```
 Look at that! We even sorted them by their first names, all on one line! If you are going to making all of your requests and mapping through `Household` and not `Person`, you can have `Person` just adhere to `JSONConvertable`.
 
-If you have a model that is going to be doing all the things, you can use `CRUDEMappable` in lieu of the listing out all five. 
+If you have a model that is going to be doing all the things, you can use `CRUDEMappable` in lieu of the listing out all five.
 
 ## The Write Way
 
