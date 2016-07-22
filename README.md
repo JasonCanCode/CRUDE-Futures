@@ -196,11 +196,11 @@ While the request is running, you can use `pauseRequest()` to take a break. Then
 
 ## Want EVEN MORE Control?!
 
-If you want do even more of the work yourself...well then you probably shouldn't be using this pod. The added conveniences are lost on you. Do you also put on rollerskates to go for a jog? Is your favorite restaurant The Melting Pot, where you rent kitchen utensils to cook your own dinner? Sure they did a little grocery shopping for you, but really you are doing the bulk of the work.
+If you want do even more of the work yourself... well then you probably shouldn't be using this pod. The added conveniences are lost on you. Do you also put on rollerskates to go for a jog? Is your favorite restaurant The Melting Pot^, where you rent kitchen utensils to cook your own dinner? Sure they did a little grocery shopping for you, but really you are doing the bulk of the work.
 
 Just use [Alamofire](http://cocoapods.org/pods/Alamofire), [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON), and [BrightFutures](http://cocoapods.org/pods/BrightFutures). That is what I did in order to put together a bunch of tools you aren't going to use. 
 
-###### _Disclaimer: The Melting Pot provides a unique dining experience that is as much about the atmosphere as it is the food._
+###### ^ _Disclaimer: The Melting Pot provides a unique dining experience that is as much about the atmosphere as it is the food._
 
 ## Author
 
