@@ -10,10 +10,10 @@ Your data models can be easily Created, Read, Updated, Deleted, and Enumerated f
 ## Requirements
 
 Crude-Futures currently requires the following pods...
-*[Alamofire](http://cocoapods.org/pods/Alamofire) version 3.4 or greater
-*[SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON) version 2.3 or greater
-*[BrightFutures](http://cocoapods.org/pods/BrightFutures) version 4.1 or greater
-*[Result](http://cocoapods.org/pods/Result) version 2.0 or greater
+* [Alamofire](http://cocoapods.org/pods/Alamofire) version 3.4 or greater
+* [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON) version 2.3 or greater
+* [BrightFutures](http://cocoapods.org/pods/BrightFutures) version 4.1 or greater
+* [Result](http://cocoapods.org/pods/Result) version 2.0 or greater
 
 ## Installation
 
@@ -154,11 +154,11 @@ request.onSuccess { people in
 
 CRUDE assumes a simple API structure in which requests relating to a model are made. If your baseURL is "https://mysite.com/api/" then requests for `Person` objects should look like this:
 
-Create => POST request to "https://mysite.com/api/people"
-Read => GET request to "https://mysite.com/api/people/12345"
-Update => PUT request to "https://mysite.com/api/people/12345"
-Delete => DELETE request to "https://mysite.com/api/people/12345"
-Enumerate => GET request to "https://mysite.com/api/people"
+* Create => POST request to "https://mysite.com/api/people"
+* Read => GET request to "https://mysite.com/api/people/12345"
+* Update => PUT request to "https://mysite.com/api/people/12345"
+* Delete => DELETE request to "https://mysite.com/api/people/12345"
+* Enumerate => GET request to "https://mysite.com/api/people"
 
 As mentioned earlier, all this is done automatically with the use of `path`. However, your API may not be quite so simple. Perhaps an update goes to "https://mysite.com/api/households/people/12345" and retrieving a specific person comes from "https://mysite.com/api/person/12345". Each of the five protocols has a specific path that you can override for requests of that type. So in this scenario, you would set a value for `updatePath` and `readPath`, letting `path` handle the other three cases.
 
@@ -168,9 +168,9 @@ If you want to be able to control the the request traffic itself, you can use a 
 
 Initialize a `CRUDERequest` instance the same way you would use the request function. The `urlString` is a must, with the option to provide `parameters` and/or `headers`. To execute the request, you have three options very similar to the three basic `CRUDE` static functions...
 
-`makeRequestForJSON` instead of `request`
-`makeRequestForObject<T: JSONConvertable>` instead of `requestObject<T: JSONConvertable>`
-`makeRequestForObjectsArray<T: JSONConvertable>` instead of `requestObjectsArray<T: JSONConvertable>`
+* `makeRequestForJSON` instead of `request`
+* `makeRequestForObject<T: JSONConvertable>` instead of `requestObject<T: JSONConvertable>`
+* `makeRequestForObjectsArray<T: JSONConvertable>` instead of `requestObjectsArray<T: JSONConvertable>`
 
 While the request is running, you can use `pauseRequest()` to take a break. Then either `resumeRequest()` later or give up on it and `cancelRequest()`.
 
