@@ -6,6 +6,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/CRUDE-Futures.svg?style=flat)](http://cocoapods.org/pods/CRUDE-Futures)
 
 Your data models can be easily Created, Read, Updated, Deleted, and Enumerated from a remote server simply by inheriting from CRUDE's various protocols. CRUDE-Futures leverages [BrightFutures](http://cocoapods.org/pods/BrightFutures) to asychronously load your data models, making requests with the help of [Alamofire](http://cocoapods.org/pods/Alamofire) and mapping the returned JSON with [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON). 
+
 _Please note, CRUDE will only work for API calls returning JSON._
 
 ## Requirements
