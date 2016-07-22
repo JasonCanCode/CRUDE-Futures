@@ -5,7 +5,8 @@
 [![License](https://img.shields.io/cocoapods/l/CRUDE-Futures.svg?style=flat)](http://cocoapods.org/pods/CRUDE-Futures)
 [![Platform](https://img.shields.io/cocoapods/p/CRUDE-Futures.svg?style=flat)](http://cocoapods.org/pods/CRUDE-Futures)
 
-Your data models can be easily Created, Read, Updated, Deleted, and Enumerated from a remote server simply by inheriting from CRUDE's various protocols. CRUDE-Futures leverages [BrightFutures](http://cocoapods.org/pods/BrightFutures) to asychronously load your data models, making requests with the help of [Alamofire](http://cocoapods.org/pods/Alamofire) and mapping the returned JSON with [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON). Please note, CRUDE will not work for API calls returning XML instead of JSON.
+Your data models can be easily Created, Read, Updated, Deleted, and Enumerated from a remote server simply by inheriting from CRUDE's various protocols. CRUDE-Futures leverages [BrightFutures](http://cocoapods.org/pods/BrightFutures) to asychronously load your data models, making requests with the help of [Alamofire](http://cocoapods.org/pods/Alamofire) and mapping the returned JSON with [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON). 
+_Please note, CRUDE will only work for API calls returning JSON._
 
 ## Requirements
 
@@ -25,7 +26,8 @@ pod 'CRUDE-Futures', :git => 'https://github.com/JasonCanCode/CRUDE-Futures.git'
 ```
 ## Getting Started
 
-The first and most important step is setting up CRUDE for use in your app. `import CRUDE_FUTURES` in your `AppDelegate`, then call `configure` within `application(application: didFinishLaunchingWithOptions:)`. For example:
+The first and most important step is setting up CRUDE for use in your app. `import CRUDE_FUTURES` in your `AppDelegate`, then call `configure` within `application(application: didFinishLaunchingWithOptions:)`. 
+For example:
 
 ```swift
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders)
@@ -41,7 +43,7 @@ let myLogger: CRUDELog = { method, response in
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders, requestLoggingBlock: myLogger)
 ```
 
-...or by providing the block at the end of your configure call...
+...or by providing the block at the end of your configure call.
 
 ```swift
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders) { method, response in
