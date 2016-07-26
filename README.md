@@ -18,9 +18,9 @@ Your data models can be easily Created, Read, Updated, Deleted, and Enumerated f
 | CRUDEDeletable    | deletePath         | DELETE       | deleteFromServer        | [Okay][3] |
 | CRUDEEnumeratable | enumeratePath      | GET          | enumerateFromServer     | [Self]    |
 
-[1]: ../blob/master/README.md#directing-traffic
-[2]: ../blob/master/README.md#making-the-call
-[3]: ../blob/master/README.md#getting-the-okay
+[1]: ../master/README.md#directing-traffic
+[2]: ../master/README.md#making-the-call
+[3]: ../master/README.md#getting-the-okay
 
 ----
 > _CRUDE will only work for API calls returning JSON._
