@@ -8,10 +8,32 @@
 
 import BrightFutures
 
+/**
+ Allows a data model to retrieve a single instance through a GET request to the API.
+ */
 public protocol CRUDEReadable: CRUDERequestable {
+    /**
+     Provide a value if the url for an individual GET varies from the convention of `CRUDE.baseURL + path`. This string will be used instead of `path` for all read requests.
+
+     **Unlike `path`, this will not automatically apply the `baseURL`. Be sure to include it in your value.**
+     */
     var readPath: String { get }
+    /// The primary key for referencing an instance of this object on a sever. 
     var id: Int { get }
+
+    /**
+     Uses the `id` to retrieve the latest version of itself. Assumes an instance of an entity can be retrieved by providing the id number of the entity in the request path.
+
+     - parameter queryItems: Optional specifications you may send with your request.
+     */
     func readFromServer(queryItems: [String: AnyObject]?) -> Future<Self, NSError>
+
+    /**
+     Retrieve an entity coorisponding to the `idNumber` provided. Assumes an instance of an entity can be retrieved by providing the id number of the entity in the request path.
+
+     - parameter idNumber:   Identifier for a specific entity
+     - parameter queryItems: Optional specifications you may send with your request.
+     */
     static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]?) -> Future<Self, NSError>
 }
 

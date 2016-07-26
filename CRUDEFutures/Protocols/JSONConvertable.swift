@@ -8,6 +8,9 @@
 
 import SwiftyJSON
 
+/**
+ Identifies any model that can be instantiated by a `JSON` object
+ */
 public protocol JSONConvertable {
     init(_ json: JSON)
 }

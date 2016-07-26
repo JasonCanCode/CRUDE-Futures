@@ -10,6 +10,7 @@ import Alamofire
 import SwiftyJSON
 import BrightFutures
 
+/// A block that receives a request type and a genereic Alamofire Response for debug logging purposes
 public typealias CRUDELog = (CRUDERequestType, Response<AnyObject, NSError>) -> Void
 
 private var _baseURL = ""
@@ -18,11 +19,12 @@ internal var _logResult: CRUDELog?
 
 public struct CRUDE {
 
+    /// The prefix for the `path` of any model. Remember that setting specific paths, such as `createPath`, will not automatically apply this prefix.
     public static var baseURL: String {
         assert(_baseURL != "", "The base URL needs to be set using CRUDE.config or CRUDE.setBaseURL")
         return _baseURL
     }
-
+    /// The headers sent with every CRUDE API request
     public static var headers: [String: String] {
         return _headers
     }
@@ -43,12 +45,28 @@ public struct CRUDE {
         _logResult = block
     }
 
+    /**
+     A convenient way to set the baseURL and headers before making any API calls.
+
+     - parameter baseURL:   The prefix for the `path` of any model.
+     - parameter headers:   Sent with every CRUDE API request
+     - parameter logResult: An optional block used for logging the outcome of a request.
+     */
     public static func configure(baseURL baseURL: String, headers: [String: String], requestLoggingBlock logResult: CRUDELog? = nil) {
         _baseURL = baseURL
         _headers = headers
         _logResult = logResult
     }
 
+    /**
+     The most direct way to sent a request to the API and receiving either a JSON object or an NSError.
+
+     - parameter requestType: `GET`, `POST`, `PUT`, or `DELETE`
+     - parameter urlString:   The full url in which to send the request. Directly calling this function will not automatically apply the `baseURL`
+     - parameter parameters:  Optionally include query or attribute items.
+
+     - returns: A Future promising a JSON object `onSuccess` or an NSError `onFailure`.
+     */
     public static func request(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
@@ -78,6 +96,22 @@ public struct CRUDE {
         return promise.future
     }
 
+    /**
+     A convenience function that leverages `request` and attempts to create an instance of the object type casted and return it `onSuccess`. 
+     
+     The best way to call this function is to first  cast it in a local variable:
+     
+          let request = requestObject(.GET, personURLString) as Future<Person, NSError>
+          request().onSuccess { person in
+            ...
+
+     - parameter requestType: `GET`, `POST`, `PUT`, or `DELETE`
+     - parameter urlString:   The full url in which to send the request. Directly calling this function will not automatically apply the `baseURL`
+     - parameter parameters:  Optionally include query or attribute items.
+     - parameter key:         Provide if the JSON for mapping an entity is wrapped in a value with a single key.
+
+     - returns: A Future promising a JSONConvertable object `onSuccess` or an NSError `onFailure`.
+     */
     public static func requestObject<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, key: String? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
@@ -94,6 +128,22 @@ public struct CRUDE {
         return promise.future
     }
 
+    /**
+     A convenience function that leverages `request` and attempts to create an array of type casted objects and return it `onSuccess`.
+
+     The best way to call this function is to first  cast it in a local variable:
+
+     let request = requestObjectsArray(.GET, personURLString) as Future<[Person], NSError>
+     request().onSuccess { people in
+     ...
+
+     - parameter requestType: `GET`, `POST`, `PUT`, or `DELETE`
+     - parameter urlString:   The full url in which to send the request. Directly calling this function will not automatically apply the `baseURL`
+     - parameter parameters:  Optionally include query or attribute items.
+     - parameter key:         Provide if the JSON for mapping a collection of entites is wrapped in a value with a single key.
+
+     - returns: A Future promising an array of JSONConvertable objects `onSuccess` or an NSError `onFailure`.
+     */
     public static func requestObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, key: String? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
@@ -111,6 +161,15 @@ public struct CRUDE {
         return promise.future
     }
 
+    /**
+     When you want to send a request to the API but you don't care what the response is (as long as it isn't an error)
+
+     - parameter requestType: `GET`, `POST`, `PUT`, or `DELETE`
+     - parameter urlString:   The full url in which to send the request. Directly calling this function will not automatically apply the `baseURL`
+     - parameter parameters:  Optionally include query or attribute items.
+
+     - returns: A Future promising an `Okay` object `onSuccess` or an NSError  object `onFailure`
+     */
     public static func requestForSuccess(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<Okay, NSError> {
         let promise = Promise<Okay, NSError>()
 

@@ -6,4 +6,5 @@
 //  Copyright © 2016 Jason Welch. All rights reserved.
 //
 
+/// An all-in-one protocol for the using all of the CRUDE functions
 public protocol CRUDEMappable: CRUDECreatable, CRUDEReadable, CRUDEUpdatable, CRUDEDeletable, CRUDEEnumeratable {}

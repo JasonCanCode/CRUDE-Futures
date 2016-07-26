@@ -8,10 +8,21 @@
 
 import BrightFutures
 
+/**
+ Allows a data model to update an existing instance through a PUT request to the API.
+ */
 public protocol CRUDEUpdatable: CRUDERequestable, JSONAttributable {
+    /// The primary key for referencing an instance of this object on a sever. 
     var id: Int { get }
+    /**
+     Provide a value if the url for a PUT varies from the convention of `CRUDE.baseURL + path`. This string will be used instead of `path` for all update requests.
+
+     **Unlike `path`, this will not automatically apply the `baseURL`. Be sure to include it in your value.**
+     */
     var updatePath: String { get }
+    /// Uses the `id` to update the latest version of itself. Assumes an instance of an entity can be updated by providing the id number of the entity in the request path.
     func updateOnServer() -> Future<Self, NSError>
+    /// A simple update that ignores the result of the request.
     func updateOnServerOkay() -> Future<Okay, NSError>
 }
 
