@@ -23,7 +23,7 @@ Easily Create, Read, Update, Delete and Enumerate objects with the help of Alamo
 
   s.homepage         = 'https://github.com/JasonCanCode/CRUDE-Futures'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Jason Welch' => 'jasonpwelch@yahoo.com' }
+  s.author           = { 'Jason Welch' => 'JasonCanCode@gmail.com' }
   s.source           = { :git => 'https://github.com/JasonCanCode/CRUDE-Futures.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
