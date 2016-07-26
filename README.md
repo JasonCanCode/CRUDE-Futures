@@ -11,7 +11,7 @@ Your data models can be easily Created, Read, Updated, Deleted, and Enumerated f
 
 ## Requirements
 
-Crude-Futures currently requires the following pods...
+Crude-Futures makes use of the following pods...
 * [Alamofire](http://cocoapods.org/pods/Alamofire) version 3.4 or greater
 * [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON) version 2.3 or greater
 * [BrightFutures](http://cocoapods.org/pods/BrightFutures) version 4.1 or greater
