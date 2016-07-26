@@ -37,11 +37,11 @@ Crude-Futures makes use of the following pods...
 
 ## Installation
 
-CRUDE-Futures is NOT YET available through [CocoaPods](http://cocoapods.org). To install
+CRUDE-Futures is available through [CocoaPods](https://cocoapods.org/pods/CRUDE-Futures). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'CRUDE-Futures', :git => 'https://github.com/JasonCanCode/CRUDE-Futures.git'
+pod 'CRUDE-Futures', '~> 0.1'
 ```
 ## Getting Started
 
