@@ -7,7 +7,25 @@
 
 Your data models can be easily Created, Read, Updated, Deleted, and Enumerated from a remote server simply by inheriting from CRUDE's various protocols. CRUDE-Futures leverages [BrightFutures](http://cocoapods.org/pods/BrightFutures) to asychronously load your data models, making requests with the help of [Alamofire](http://cocoapods.org/pods/Alamofire) and mapping the returned JSON with [SwiftyJSON](http://cocoapods.org/pods/SwiftyJSON). 
 
-##### _CRUDE will only work for API calls returning JSON._
+| Protocol          | [Path Override][1] | Request Type | [Convenience Method][2] | Returns   |
+|:-----------------:|:------------------:|:------------:|:-----------------------:|:---------:|
+| CRUDECreatable    | createPath         | POST         | createOnServer          | Self      |
+|                   |                    |              | createOnServerOkay      | [Okay][3] |
+| CRUDEReadable     | readPath           | GET          | readFromServer          | Self      |
+|                   |                    |              | readFromServerWithId    | Self      |
+| CRUDEUpdatabe     | updatePath         | PUT          | updateOnServer          | Self      |
+|                   |                    |              | updateOnServerOkay      | [Okay][3] |
+| CRUDEDeletable    | deletePath         | DELETE       | deleteFromServer        | [Okay][3] |
+| CRUDEEnumeratable | enumeratePath      | GET          | enumerateFromServer     | [Self]    |
+
+[1]: ..#directing-traffic
+[2]: ..#making-the-call
+[3]: ..#getting-the-okay
+
+----
+> _CRUDE will only work for API calls returning JSON._
+
+----
 
 ## Requirements
 
