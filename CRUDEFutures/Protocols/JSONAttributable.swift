@@ -15,14 +15,29 @@ public protocol JSONAttributable {
     /// A dictionary representation of an entity's attributes.
     var attributes: [String: AnyObject?] { get }
     /// Provides a dictionary of only attributes that have a value (removing optionals that are nil).
-    var validAttributes: [String: AnyObject] { get }
+    var valuedAttributes: [String: AnyObject] { get }
+    /// Provides a dictionary of attributes in which nil values are converted to `NSNull`.
+    var nullifiedAttributes: [String: AnyObject] { get }
 }
 
 extension JSONAttributable {
-    public var validAttributes: [String: AnyObject] {
+
+    public var valuedAttributes: [String: AnyObject] {
         var validAttributes: [String: AnyObject] = [:]
         for case let (key, value?) in attributes {
             validAttributes[key] = value
+        }
+        return validAttributes
+    }
+
+    public var nullifiedAttributes: [String: AnyObject] {
+        var validAttributes: [String: AnyObject] = [:]
+        for (key, value) in attributes {
+            if let value = value {
+                validAttributes[key] = value
+            } else {
+                validAttributes[key] = NSNull()
+            }
         }
         return validAttributes
     }
