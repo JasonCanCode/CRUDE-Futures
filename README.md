@@ -129,15 +129,16 @@ var attributes: [String : AnyObject?] {
 }
 ```
 
-Notice that `attributes` contains optional objects. `JSONAttributable` provides a computed property called `validAttributes` that will automatically remove attributes that don't have values, like potentially `favoriteColor`.
+Notice that `attributes` contains optional objects. `JSONAttributable` provides a computed property called `nullifiedAttributes` that will give any nil attributes a value of `NSNull`, like potentially `favoriteColor`. It also provides a computed property called `valuedAttributes` that will automatically remove attributes that don't have values.
 
-In the example of the `Household` model, an entity would contain `"people": people.map { $0.validAttributes }` when computing its `attributes`.
+In the example of the `Household` model, an entity would contain `"people": people.map { $0.nullifiedAttributes }` when computing its `attributes`.
 
-## Getting the Okay
+----
+> CRUDE assumes that your API only updates attributes for parameters it receives and therefore requires an NSNull value for attributes that have been set to nil. If that is not the case (no news is null news) then you can make use of `valuedAttributes` and make that stipulation when updating like so:
+> `thisPerson.updateOnServer(valuedAttributesOnly: true)`
 
-`Okay` is an empty object with the sole purpose to have something to return `.onSuccess`. This is used by any model that is `CRUDEDeletable`, since there shouldn't be any mappable JSON coming back from a DELETE request.
+----
 
-If you want to make a request and you don't care what is coming back from the server you can use `CRUDE.requestForSuccess`, which will also return an `Okay`.
 
 ## Making the Call
 
@@ -179,6 +180,12 @@ request.onSuccess { people in
     self.household.people = people
 }
 ```
+
+## Getting the Okay
+
+`Okay` is an empty object with the sole purpose to have something to return `.onSuccess`. This is used by any model that is `CRUDEDeletable`, since there shouldn't be any mappable JSON coming back from a DELETE request.
+
+If you want to make a request and you don't care what is coming back from the server you can use `CRUDE.requestForSuccess`, which will also return an `Okay`.
 
 ## Directing Traffic
 
