@@ -71,7 +71,7 @@ CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders) { m
 }
 ```
 
-If you don't provide a logging block, a default logger will be used. The default logger only prints to the console in a DEBUG build. If you don't want CRUDE to print to the console, you can turn off the default logger by calling `CRUDE.useDefaultLogger(false)`.
+If you don't provide a logging block, a default logger will be used. The default logger only prints to the console in a DEBUG build. If you don't want CRUDE to print to the console, you can turn off the default logger by setting `CRUDE.shouldUseDefaultLogger` to `false`.
 
 ## Mappable Models
 
