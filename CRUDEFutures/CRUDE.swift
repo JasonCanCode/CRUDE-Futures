@@ -15,7 +15,16 @@ public typealias CRUDELog = (CRUDERequestType, Response<AnyObject, NSError>) -> 
 
 private var _baseURL = ""
 private var _headers: [String: String] = [:]
-internal var _logResult: CRUDELog?
+private var _customLogger: CRUDELog?
+internal var _logResult: CRUDELog? {
+    if let logger = _customLogger {
+        return logger
+    } else if CRUDE.shouldUseDefaultLogger {
+        return CRUDE.defaultLogger
+    } else {
+        return nil
+    }
+}
 
 public struct CRUDE {
 
@@ -42,8 +51,10 @@ public struct CRUDE {
     }
 
     public static func setRequestLoggingBlock(block: CRUDELog) {
-        _logResult = block
+        _customLogger = block
     }
+    /// Turn on/off the built in reporting that prints request results to your console (DEBUG builds only).
+    public static var shouldUseDefaultLogger = true
 
     /**
      A convenient way to set the baseURL and headers before making any API calls.
@@ -55,7 +66,7 @@ public struct CRUDE {
     public static func configure(baseURL baseURL: String, headers: [String: String], requestLoggingBlock logResult: CRUDELog? = nil) {
         _baseURL = baseURL
         _headers = headers
-        _logResult = logResult
+        _customLogger = logResult
     }
 
     /**
@@ -202,6 +213,27 @@ public struct CRUDE {
         var debugInfo: [String: AnyObject] = ["request": request, "response": network.response!, "title": title, "detail": issue]
         debugInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
         return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
+    }
+
+    private static var defaultLogger: CRUDELog = { type, network in
+        #if DEBUG
+            var message = "CRUDE request \(type) "
+            if let urlString = network.request?.URLString {
+                message += "sent to \(urlString) "
+            }
+            guard let response = network.response else {
+                message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+                return
+            }
+            if response.statusCode >= 300 {
+                message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+            } else {
+                // server can return an empty response, which is ok
+                let json = network.result.value != nil ? JSON(network.result.value!) : nil
+                message += "successfully received JSON:\n\(json)"
+            }
+            print(message)
+        #endif
     }
 
     private static func queryString(params: [String: AnyObject]?) -> String {
