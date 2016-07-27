@@ -16,10 +16,10 @@
 public protocol CRUDERequestable: JSONConvertable {
     /// A postfix for the `CRUDE.baseURL` when CRUDE protocol requests are made.
     static var path: String { get }
-    /// Provide a value if the JSON for mapping an entity will be wrapped in a value with a single key.
     static var objectKey: String? { get }
 }
 
 extension CRUDERequestable {
+    /// Provide a value if the JSON for mapping an entity will be wrapped in a value with a single key.
     public static var objectKey: String? { return nil }
 }

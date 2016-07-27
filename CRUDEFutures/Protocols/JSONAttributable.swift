@@ -14,14 +14,12 @@
 public protocol JSONAttributable {
     /// A dictionary representation of an entity's attributes.
     var attributes: [String: AnyObject?] { get }
-    /// Provides a dictionary of only attributes that have a value (removing optionals that are nil).
     var valuedAttributes: [String: AnyObject] { get }
-    /// Provides a dictionary of attributes in which nil values are converted to `NSNull`.
     var nullifiedAttributes: [String: AnyObject] { get }
 }
 
 extension JSONAttributable {
-
+    /// Provides a dictionary of only attributes that have a value (removing optionals that are nil).
     public var valuedAttributes: [String: AnyObject] {
         var validAttributes: [String: AnyObject] = [:]
         for case let (key, value?) in attributes {
@@ -30,6 +28,7 @@ extension JSONAttributable {
         return validAttributes
     }
 
+    /// Provides a dictionary of attributes in which nil values are converted to `NSNull`.
     public var nullifiedAttributes: [String: AnyObject] {
         var validAttributes: [String: AnyObject] = [:]
         for (key, value) in attributes {
