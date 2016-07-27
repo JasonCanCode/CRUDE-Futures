@@ -86,7 +86,7 @@ public struct CRUDE {
                     return
                 }
                 if response.statusCode >= 300 {
-                    promise.failure(self.errorFromResponse(network, parameters))
+                    promise.failure(self.errorFromResponse(network))
                 } else {
                     // server can return an empty response, which is ok
                     let json = network.result.value != nil ? JSON(network.result.value!) : nil
@@ -183,7 +183,7 @@ public struct CRUDE {
         return promise.future
     }
 
-    internal static func errorFromResponse(network: Response<AnyObject, NSError>, _ parameters: [String: AnyObject]? = nil) -> NSError {
+    internal static func errorFromResponse(network: Response<AnyObject, NSError>) -> NSError {
         guard let response = network.response, request = network.request else {
             return NSError(domain: "Unknown Error", code: 600, userInfo: nil)
         }

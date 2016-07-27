@@ -70,7 +70,7 @@ public struct CRUDERequest {
                 return
             }
             if response.statusCode >= 300 {
-                promise.failure(CRUDE.errorFromResponse(network, self.parameters))
+                promise.failure(CRUDE.errorFromResponse(network))
             } else {
                 // server can return an empty response, which is ok
                 let json = network.result.value != nil ? JSON(network.result.value!) : nil
