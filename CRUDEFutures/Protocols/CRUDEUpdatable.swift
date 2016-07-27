@@ -21,19 +21,21 @@ public protocol CRUDEUpdatable: CRUDERequestable, JSONAttributable {
      */
     var updatePath: String { get }
     /// Uses the `id` to update the latest version of itself. Assumes an instance of an entity can be updated by providing the id number of the entity in the request path.
-    func updateOnServer() -> Future<Self, NSError>
+    func updateOnServer(valuedAttributesOnly valuedOnly: Bool) -> Future<Self, NSError>
     /// A simple update that ignores the result of the request.
-    func updateOnServerOkay() -> Future<Okay, NSError>
+    func updateOnServerOkay(valuedAttributesOnly valuedOnly: Bool) -> Future<Okay, NSError>
 }
 
 extension CRUDEUpdatable {
     public var updatePath: String { return CRUDE.baseURL + "\(Self.path)/\(id)" }
 
-    public func updateOnServer() -> Future<Self, NSError> {
-        return CRUDE.requestObject(.PUT, updatePath, parameters: nullifiedAttributes, key: Self.objectKey)
+    public func updateOnServer(valuedAttributesOnly valuedOnly: Bool = false) -> Future<Self, NSError> {
+        let attributes = valuedOnly ? valuedAttributes : nullifiedAttributes
+        return CRUDE.requestObject(.PUT, updatePath, parameters: attributes, key: Self.objectKey)
     }
 
-    public func updateOnServerOkay() -> Future<Okay, NSError> {
-        return CRUDE.requestForSuccess(.PUT, updatePath)
+    public func updateOnServerOkay(valuedAttributesOnly valuedOnly: Bool = false) -> Future<Okay, NSError> {
+        let attributes = valuedOnly ? valuedAttributes : nullifiedAttributes
+        return CRUDE.requestForSuccess(.PUT, updatePath, parameters: attributes)
     }
 }
