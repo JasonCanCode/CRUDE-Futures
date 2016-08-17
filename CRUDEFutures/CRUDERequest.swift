@@ -72,7 +72,8 @@ public struct CRUDERequest {
                 // server can return an empty response, which is ok
                 let json = response.result.value != nil ? JSON(response.result.value!) : nil
                 promise.success(json)
-            case .Failure(let error):
+            case .Failure:
+                let error = CRUDE.errorFromResponse(response)
                 promise.failure(error)
             }
         }
