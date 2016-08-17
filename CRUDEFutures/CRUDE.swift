@@ -119,13 +119,13 @@ public struct CRUDE {
     }
 
     /**
-     A convenience function that leverages `request` and attempts to create an instance of the object type casted and return it `onSuccess`. 
-     
+     A convenience function that leverages `request` and attempts to create an instance of the object type casted and return it `onSuccess`.
+
      The best way to call this function is to first  cast it in a local variable:
-     
-          let request = requestObject(.GET, personURLString) as Future<Person, NSError>
-          request().onSuccess { person in
-            ...
+
+     let request = requestObject(.GET, personURLString) as Future<Person, NSError>
+     request().onSuccess { person in
+     ...
 
      - parameter requestType: `GET`, `POST`, `PUT`, or `DELETE`
      - parameter urlString:   The full url in which to send the request. Directly calling this function will not automatically apply the `baseURL`
@@ -226,23 +226,24 @@ public struct CRUDE {
         return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
     }
 
-    private static var defaultLogger: CRUDELog = { type, network in
-            var message = "CRUDE request \(type) "
-            if let urlString = network.request?.URLString {
-                message += "sent to \(urlString) "
-            }
-            guard let response = network.response else {
-                message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
-                return
-            }
-            if response.statusCode >= 300 {
-                message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
-            } else {
-                // server can return an empty response, which is ok
-                let json = network.result.value != nil ? JSON(network.result.value!) : nil
-                message += "successfully received JSON:\n\(json)"
-            }
-            print(message)
+    private static var defaultLogger: CRUDEResponseLog = { network in
+        let type = network.request?.HTTPMethod ?? "UNKNOWN"
+        var message = "CRUDE request \(type) "
+        if let urlString = network.request?.URLString {
+            message += "sent to \(urlString) "
+        }
+        guard let response = network.response else {
+            message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+            return
+        }
+        if response.statusCode >= 300 {
+            message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+        } else {
+            // server can return an empty response, which is ok
+            let json = network.result.value != nil ? JSON(network.result.value!) : nil
+            message += "successfully received JSON:\n\(json)"
+        }
+        print(message)
     }
 
     private static func queryString(params: HTTPQueryParameters) -> String {
