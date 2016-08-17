@@ -99,20 +99,18 @@ public struct CRUDE {
         _requestLog?(requestType, urlString.URLString, parameters, headers)
 
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
-            .responseJSON { network in
+            .validate()
+            .responseJSON { response in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                _responseLog?(network)
+                _responseLog?(response)
 
-                guard let response = network.response else {
-                    promise.failure(self.errorFromResponse(network))
-                    return
-                }
-                if response.statusCode >= 300 {
-                    promise.failure(self.errorFromResponse(network))
-                } else {
+                switch response.result {
+                case .Success:
                     // server can return an empty response, which is ok
-                    let json = network.result.value != nil ? JSON(network.result.value!) : nil
+                    let json = response.result.value != nil ? JSON(response.result.value!) : nil
                     promise.success(json)
+                case .Failure(let error):
+                    promise.failure(error)
                 }
         }
         return promise.future
@@ -205,44 +203,20 @@ public struct CRUDE {
         return promise.future
     }
 
-    internal static func errorFromResponse(network: Response<AnyObject, NSError>) -> NSError {
-        guard let response = network.response, request = network.request else {
-            return NSError(domain: "Unknown Error", code: 600, userInfo: nil)
-        }
-
-        let statusCodeDescription = NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
-        var issue = statusCodeDescription
-        var title = "Error"
-
-        if let json = network.result.value, let error = JSON(json)["error"].string {
-            issue = error
-        }
-        if let json = network.result.value where JSON(json)["errorsList"] != nil, let errorsList = JSON(json)["errorsList"].array where !errorsList.isEmpty {
-            title = errorsList[0]["title"].stringValue
-            issue = errorsList[0]["detail"].stringValue
-        }
-        var debugInfo: [String: AnyObject] = ["request": request, "response": network.response!, "title": title, "detail": issue]
-        debugInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
-        return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
-    }
-
-    private static var defaultLogger: CRUDEResponseLog = { network in
-        let type = network.request?.HTTPMethod ?? "UNKNOWN"
+    private static var defaultLogger: CRUDEResponseLog = { response in
+        let type = response.request?.HTTPMethod ?? "UNKNOWN"
         var message = "CRUDE request \(type) "
-        if let urlString = network.request?.URLString {
+        if let urlString = response.request?.URLString {
             message += "sent to \(urlString) "
         }
-        guard let response = network.response else {
-            message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+        if let error = response.result.error {
+            message += "FAILED with error: \(error)"
+            print(message)
             return
         }
-        if response.statusCode >= 300 {
-            message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
-        } else {
-            // server can return an empty response, which is ok
-            let json = network.result.value != nil ? JSON(network.result.value!) : nil
-            message += "successfully received JSON:\n\(json)"
-        }
+        // server can return an empty response, which is ok
+        let json = response.result.value != nil ? JSON(response.result.value!) : nil
+        message += "successfully received JSON:\n\(json)"
         print(message)
     }
 

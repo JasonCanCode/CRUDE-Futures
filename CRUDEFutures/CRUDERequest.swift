@@ -63,20 +63,17 @@ public struct CRUDERequest {
         _requestLog?(requestType, urlString.URLString, parameters, headers)
 
         request = Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: headers)
-        request!.responseJSON { network in
+        request!.responseJSON { response in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            _responseLog?(network)
+            _responseLog?(response)
 
-            guard let response = network.response else {
-                promise.failure(CRUDE.errorFromResponse(network))
-                return
-            }
-            if response.statusCode >= 300 {
-                promise.failure(CRUDE.errorFromResponse(network))
-            } else {
+            switch response.result {
+            case .Success:
                 // server can return an empty response, which is ok
-                let json = network.result.value != nil ? JSON(network.result.value!) : nil
+                let json = response.result.value != nil ? JSON(response.result.value!) : nil
                 promise.success(json)
+            case .Failure(let error):
+                promise.failure(error)
             }
         }
         return promise.future

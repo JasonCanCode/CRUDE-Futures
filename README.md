@@ -57,13 +57,12 @@ If you would like CRUDE to do some kind of logging whenever API calls are made, 
 
 ```swift
 let myLogger: CRUDEResponseLog = { response in
-    switch network.result {
-    case .Success:
-        let method = network.request?.HTTPMethod ?? "UNKNOWN"
-        let urlString = network.request?.URLString ?? "unknown"
+    if let error = response.result.error {
+         print("CRUDE FAILURE: \(error.localizedDescription)")
+    } else 
+        let method = response.request?.HTTPMethod ?? "UNKNOWN"
+        let urlString = response.request?.URLString ?? "unknown"
         print("\(network.response!.statusCode) from \(method) \(urlString)")
-    case .Failure(let error):
-        print("CRUDE FAILURE: \(error.localizedDescription)")
     }
 }
 
