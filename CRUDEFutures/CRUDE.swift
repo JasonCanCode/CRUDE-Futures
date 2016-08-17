@@ -216,7 +216,6 @@ public struct CRUDE {
     }
 
     private static var defaultLogger: CRUDELog = { type, network in
-        #if DEBUG
             var message = "CRUDE request \(type) "
             if let urlString = network.request?.URLString {
                 message += "sent to \(urlString) "
@@ -233,7 +232,6 @@ public struct CRUDE {
                 message += "successfully received JSON:\n\(json)"
             }
             print(message)
-        #endif
     }
 
     private static func queryString(params: [String: AnyObject]?) -> String {
