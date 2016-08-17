@@ -10,14 +10,20 @@ import Alamofire
 import SwiftyJSON
 import BrightFutures
 
+public typealias HTTPHeaders = [String: String]
+public typealias HTTPQueryParameters = [String: AnyObject]?
+
+/// Used to log the request pre-flight
+public typealias CRUDERequestLog = (CRUDERequestType, String, HTTPQueryParameters, HTTPHeaders) -> Void
 /// A block that receives a request type and a genereic Alamofire Response for debug logging purposes
-public typealias CRUDELog = (CRUDERequestType, Response<AnyObject, NSError>) -> Void
+public typealias CRUDEResponseLog = (CRUDERequestType, Response<AnyObject, NSError>) -> Void
 
 private var _baseURL = ""
-private var _headers: [String: String] = [:]
-private var _customLogger: CRUDELog?
-internal var _logResult: CRUDELog? {
-    if let logger = _customLogger {
+private var _headers: HTTPHeaders = [:]
+private var _customResponseLogger: CRUDEResponseLog?
+internal var _requestLog: CRUDERequestLog?
+internal var _responseLog: CRUDEResponseLog? {
+    if let logger = _customResponseLogger {
         return logger
     } else if CRUDE.shouldUseDefaultLogger {
         return CRUDE.defaultLogger
@@ -34,7 +40,7 @@ public struct CRUDE {
         return _baseURL
     }
     /// The headers sent with every CRUDE API request
-    public static var headers: [String: String] {
+    public static var headers: HTTPHeaders {
         return _headers
     }
 
@@ -42,7 +48,7 @@ public struct CRUDE {
         _baseURL = baseURL
     }
 
-    public static func setHeaders(headers: [String: String]) {
+    public static func setHeaders(headers: HTTPHeaders) {
         _headers = headers
     }
 
@@ -50,11 +56,14 @@ public struct CRUDE {
         _headers[key] = value
     }
 
-    public static func setRequestLoggingBlock(block: CRUDELog) {
-        _customLogger = block
+    public static func setRequestLoggingBlock(block: CRUDERequestLog) {
+        _requestLog = block
     }
-    /// Turn on/off the built in reporting that prints request results to your console (DEBUG builds only).
-    public static var shouldUseDefaultLogger = true
+    public static func setResponseLoggingBlock(block: CRUDEResponseLog) {
+        _customResponseLogger = block
+    }
+    /// Turn on/off the built in reporting that prints request results to your console.
+    public static var shouldUseDefaultLogger = false
 
     /**
      A convenient way to set the baseURL and headers before making any API calls.
@@ -63,10 +72,10 @@ public struct CRUDE {
      - parameter headers:   Sent with every CRUDE API request
      - parameter logResult: An optional block used for logging the outcome of a request.
      */
-    public static func configure(baseURL baseURL: String, headers: [String: String], requestLoggingBlock logResult: CRUDELog? = nil) {
+    public static func configure(baseURL: String, headers: HTTPHeaders, requestLoggingBlock logResult: CRUDEResponseLog? = nil) {
         _baseURL = baseURL
         _headers = headers
-        _customLogger = logResult
+        _customResponseLogger = logResult
     }
 
     /**
@@ -78,7 +87,7 @@ public struct CRUDE {
 
      - returns: A Future promising a JSON object `onSuccess` or an NSError `onFailure`.
      */
-    public static func request(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<JSON, NSError> {
+    public static func request(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -87,10 +96,12 @@ public struct CRUDE {
             ? .JSON
             : .URLEncodedInURL
 
+        _requestLog?(requestType, urlString.URLString, parameters, headers)
+
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
             .responseJSON { network in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                _logResult?(requestType, network)
+                _responseLog?(requestType, network)
 
                 guard let response = network.response else {
                     promise.failure(self.errorFromResponse(network))
@@ -123,7 +134,7 @@ public struct CRUDE {
 
      - returns: A Future promising a JSONConvertable object `onSuccess` or an NSError `onFailure`.
      */
-    public static func requestObject<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, key: String? = nil) -> Future<T, NSError> {
+    public static func requestObject<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil, key: String? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
@@ -155,7 +166,7 @@ public struct CRUDE {
 
      - returns: A Future promising an array of JSONConvertable objects `onSuccess` or an NSError `onFailure`.
      */
-    public static func requestObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, key: String? = nil) -> Future<[T], NSError> {
+    public static func requestObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil, key: String? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
@@ -181,7 +192,7 @@ public struct CRUDE {
 
      - returns: A Future promising an `Okay` object `onSuccess` or an NSError  object `onFailure`
      */
-    public static func requestForSuccess(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Future<Okay, NSError> {
+    public static func requestForSuccess(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil) -> Future<Okay, NSError> {
         let promise = Promise<Okay, NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
@@ -234,7 +245,7 @@ public struct CRUDE {
             print(message)
     }
 
-    private static func queryString(params: [String: AnyObject]?) -> String {
+    private static func queryString(params: HTTPQueryParameters) -> String {
         guard let params = params else {
             return ""
         }

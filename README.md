@@ -53,25 +53,39 @@ For example:
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders)
 ```
 
-If you would like CRUDE to do some kind of logging whenever API calls are made, you can provide a `CRUDELog` block. This can be done through a variable:
+If you would like CRUDE to do some kind of logging whenever API calls are made, you can provide a block to be run pre-request:
 
 ```swift
-let myLogger: CRUDELog = { method, response in
-    print("CRUDE request \(method) \(response.request?.URLString)")
+let httpRequestLogger: CRUDERequestLog = { method, path, params, headers in
+    print("CRUDE request \(method) \(path)")
+    if let params = params {
+        for (name, value) in params {
+            print("\(name)=\(value)")
+        }
+    }
+    print("HTTP Headers:")
+    for (name, value) in headers {
+        print("\(name): \(value)")
+    }
 }
-
-CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders, requestLoggingBlock: myLogger)
+CRUDE.setRequestLoggingBlock(httpRequestLogger)
 ```
 
-...or by providing the block at the end of your configure call:
+And to log responses:
 
 ```swift
-CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders) { method, response in
-    print("CRUDE request \(method) \(response.request?.URLString)")
+let httpResponseLogger: CRUDEResponseLog = { network in
+    switch network.result {
+    case .Success:
+        let method = network.request?.HTTPMethod ?? "UNKNOWN"
+        let urlString = network.request?.URLString ?? "unknown"
+        print("\(network.response!.statusCode) from \(method) \(urlString)")
+    case .Failure(let error):
+        print("CRUDE FAILURE: \(error.localizedDescription)")
+    }
 }
+CRUDE.setResponseLoggingBlock(httpResponseLogger)
 ```
-
-If you don't provide a logging block, a default logger will be used. The default logger only prints to the console in a DEBUG build. If you don't want CRUDE to print to the console, you can turn off the default logger by setting `CRUDE.shouldUseDefaultLogger` to `false`.
 
 ## Mappable Models
 
