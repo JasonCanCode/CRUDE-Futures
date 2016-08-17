@@ -53,28 +53,10 @@ For example:
 CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders)
 ```
 
-If you would like CRUDE to do some kind of logging whenever API calls are made, you can provide a block to be run pre-request:
+If you would like CRUDE to do some kind of logging whenever API calls are made, you can provide a `CRUDEResponseLog` block. This can be done through a variable:
 
 ```swift
-let httpRequestLogger: CRUDERequestLog = { method, path, params, headers in
-    print("CRUDE request \(method) \(path)")
-    if let params = params {
-        for (name, value) in params {
-            print("\(name)=\(value)")
-        }
-    }
-    print("HTTP Headers:")
-    for (name, value) in headers {
-        print("\(name): \(value)")
-    }
-}
-CRUDE.setRequestLoggingBlock(httpRequestLogger)
-```
-
-And to log responses:
-
-```swift
-let httpResponseLogger: CRUDEResponseLog = { network in
+let myLogger: CRUDEResponseLog = { response in
     switch network.result {
     case .Success:
         let method = network.request?.HTTPMethod ?? "UNKNOWN"
@@ -84,8 +66,35 @@ let httpResponseLogger: CRUDEResponseLog = { network in
         print("CRUDE FAILURE: \(error.localizedDescription)")
     }
 }
-CRUDE.setResponseLoggingBlock(httpResponseLogger)
+
+CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders, responseLoggingBlock: myLogger)
 ```
+
+...or by providing the block at the end of your configure call:
+
+```swift
+CRUDE.configure(baseURL: "https://mysite.com/api", headers: kDefaultHeaders) { response in
+    print("CRUDE response: \(response)")
+}
+```
+
+You can also set the response logging block after configuring CRUDE using the `CRUDE.setResponseLoggingBlock` function. You can even set a logger to fire before the request is made using the `CRUDE.setRequestLoggingBlock` function. For example:
+
+```swift
+CRUDE.setRequestLoggingBlock() { method, path, params, headers in
+    print("CRUDE request \(method) \(path)")
+    params?.forEach { print("\($0)=\($1)") }
+    print("HTTP Headers:")
+    headers.forEach { print("\($0)=\($1)") }
+}
+```
+
+----
+> If you don't provide a logging block, a default logger can be used by setting `CRUDE.shouldUseDefaultLogger` to `true`.
+
+----
+
+
 
 ## Mappable Models
 

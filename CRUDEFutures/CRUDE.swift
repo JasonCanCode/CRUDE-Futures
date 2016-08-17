@@ -16,7 +16,7 @@ public typealias HTTPQueryParameters = [String: AnyObject]?
 /// Used to log the request pre-flight
 public typealias CRUDERequestLog = (CRUDERequestType, String, HTTPQueryParameters, HTTPHeaders) -> Void
 /// A block that receives a request type and a genereic Alamofire Response for debug logging purposes
-public typealias CRUDEResponseLog = (CRUDERequestType, Response<AnyObject, NSError>) -> Void
+public typealias CRUDEResponseLog = (Response<AnyObject, NSError>) -> Void
 
 private var _baseURL = ""
 private var _headers: HTTPHeaders = [:]
@@ -72,7 +72,7 @@ public struct CRUDE {
      - parameter headers:   Sent with every CRUDE API request
      - parameter logResult: An optional block used for logging the outcome of a request.
      */
-    public static func configure(baseURL: String, headers: HTTPHeaders, requestLoggingBlock logResult: CRUDEResponseLog? = nil) {
+    public static func configure(baseURL: String, headers: HTTPHeaders, responseLoggingBlock logResult: CRUDEResponseLog? = nil) {
         _baseURL = baseURL
         _headers = headers
         _customResponseLogger = logResult
@@ -101,7 +101,7 @@ public struct CRUDE {
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
             .responseJSON { network in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                _responseLog?(requestType, network)
+                _responseLog?(network)
 
                 guard let response = network.response else {
                     promise.failure(self.errorFromResponse(network))
