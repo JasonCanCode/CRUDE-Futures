@@ -24,7 +24,7 @@ import BrightFutures
 public struct CRUDERequest {
 
     public var urlString: URLStringConvertible
-    public var parameters: [String: AnyObject]? = nil
+    public var parameters: HTTPQueryParameters = nil
     public var headers: [String: String]? = nil
     private var request: Request? = nil
 
@@ -37,7 +37,7 @@ public struct CRUDERequest {
      - parameter parameters:  Optionally include query or attribute items.
      - parameter headers:    Provide if the headers for this request differ from those used by CRUDE. If headers are not provided, the request will default to the headers set when CRUDE was configured.
      */
-    public init(urlString: URLStringConvertible, parameters: [String: AnyObject]? = nil, headers: [String: String]? = nil) {
+    public init(urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil, headers: [String: String]? = nil) {
         self.urlString = urlString
         self.parameters = parameters
         self.headers = headers
@@ -60,10 +60,12 @@ public struct CRUDERequest {
             : .URLEncodedInURL
         let headers = self.headers ?? CRUDE.headers
 
+        _requestLog?(requestType, urlString.URLString, parameters, headers)
+
         request = Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: headers)
         request!.responseJSON { network in
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            _logResult?(requestType, network)
+            _responseLog?(network)
 
             guard let response = network.response else {
                 promise.failure(CRUDE.errorFromResponse(network))
