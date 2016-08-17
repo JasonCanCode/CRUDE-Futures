@@ -15,13 +15,22 @@ public typealias HTTPQueryParameters = [String: AnyObject]?
 
 /// Used to log the request pre-flight
 public typealias CRUDERequestLog = (CRUDERequestType, String, HTTPQueryParameters, HTTPHeaders) -> Void
-/// Used to log the response
-public typealias CRUDEResponseLog = (Response<AnyObject, NSError>) -> Void
+/// A block that receives a request type and a genereic Alamofire Response for debug logging purposes
+public typealias CRUDEResponseLog = (CRUDERequestType, Response<AnyObject, NSError>) -> Void
 
 private var _baseURL = ""
 private var _headers: HTTPHeaders = [:]
+private var _customResponseLogger: CRUDEResponseLog?
 internal var _requestLog: CRUDERequestLog?
-internal var _responseLog: CRUDEResponseLog?
+internal var _responseLog: CRUDEResponseLog? {
+    if let logger = _customResponseLogger {
+        return logger
+    } else if CRUDE.shouldUseDefaultLogger {
+        return CRUDE.defaultLogger
+    } else {
+        return nil
+    }
+}
 
 public struct CRUDE {
 
@@ -51,8 +60,10 @@ public struct CRUDE {
         _requestLog = block
     }
     public static func setResponseLoggingBlock(block: CRUDEResponseLog) {
-        _responseLog = block
+        _customResponseLogger = block
     }
+    /// Turn on/off the built in reporting that prints request results to your console.
+    public static var shouldUseDefaultLogger = false
 
     /**
      A convenient way to set the baseURL and headers before making any API calls.
@@ -61,9 +72,10 @@ public struct CRUDE {
      - parameter headers:   Sent with every CRUDE API request
      - parameter logResult: An optional block used for logging the outcome of a request.
      */
-    public static func configure(baseURL: String, headers: HTTPHeaders) {
+    public static func configure(baseURL: String, headers: HTTPHeaders, requestLoggingBlock logResult: CRUDEResponseLog? = nil) {
         _baseURL = baseURL
         _headers = headers
+        _customResponseLogger = logResult
     }
 
     /**
@@ -89,7 +101,7 @@ public struct CRUDE {
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
             .responseJSON { network in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                _responseLog?(network)
+                _responseLog?(requestType, network)
 
                 guard let response = network.response else {
                     promise.failure(self.errorFromResponse(network))
@@ -212,6 +224,25 @@ public struct CRUDE {
         var debugInfo: [String: AnyObject] = ["request": request, "response": network.response!, "title": title, "detail": issue]
         debugInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
         return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
+    }
+
+    private static var defaultLogger: CRUDEResponseLog = { type, network in
+            var message = "CRUDE request \(type) "
+            if let urlString = network.request?.URLString {
+                message += "sent to \(urlString) "
+            }
+            guard let response = network.response else {
+                message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+                return
+            }
+            if response.statusCode >= 300 {
+                message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
+            } else {
+                // server can return an empty response, which is ok
+                let json = network.result.value != nil ? JSON(network.result.value!) : nil
+                message += "successfully received JSON:\n\(json)"
+            }
+            print(message)
     }
 
     private static func queryString(params: HTTPQueryParameters) -> String {
