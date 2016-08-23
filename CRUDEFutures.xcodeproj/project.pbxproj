@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		121A1BFA1D6B9EEA00B0543D /* CRUDEFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A1BF91D6B9EEA00B0543D /* CRUDEFuturesTests.swift */; };
+		121A1BFC1D6B9EEA00B0543D /* CRUDEFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB9C7D8A1D009CDC0058EEA3 /* CRUDEFutures.framework */; };
 		27BE08BC19B3E795ACB92901 /* Pods_CRUDEFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */; };
 		CB0D4F8B1D09DAC400FDBF61 /* JSONAttributable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */; };
 		CB1F2FBC1D3E9C2E0098C7C8 /* CRUDERequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1F2FBB1D3E9C2E0098C7C8 /* CRUDERequest.swift */; };
@@ -31,7 +33,20 @@
 		CBFE264F1D05BAB7008ADC81 /* CRUDEMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFE264E1D05BAB7008ADC81 /* CRUDEMappable.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		121A1BFD1D6B9EEA00B0543D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB9C7D811D009CDC0058EEA3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB9C7D891D009CDC0058EEA3;
+			remoteInfo = CRUDEFutures;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		121A1BF71D6B9EEA00B0543D /* CRUDEFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CRUDEFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		121A1BF91D6B9EEA00B0543D /* CRUDEFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDEFuturesTests.swift; sourceTree = "<group>"; };
+		121A1BFB1D6B9EEA00B0543D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BAC493EF3E177C44D7FB971 /* Pods-CRUDEFutures.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.release.xcconfig"; sourceTree = "<group>"; };
 		750F85DEFB2F47CA1907B5F1 /* Pods-CRUDEFutures.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.debug.xcconfig"; sourceTree = "<group>"; };
 		CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONAttributable.swift; path = Protocols/JSONAttributable.swift; sourceTree = "<group>"; };
@@ -61,6 +76,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		121A1BF41D6B9EEA00B0543D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				121A1BFC1D6B9EEA00B0543D /* CRUDEFutures.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9C7D861D009CDC0058EEA3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -88,6 +111,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		121A1BF81D6B9EEA00B0543D /* CRUDEFuturesTests */ = {
+			isa = PBXGroup;
+			children = (
+				121A1BF91D6B9EEA00B0543D /* CRUDEFuturesTests.swift */,
+				121A1BFB1D6B9EEA00B0543D /* Info.plist */,
+			);
+			path = CRUDEFuturesTests;
+			sourceTree = "<group>";
+		};
 		4E03AECA49E35CB1AC55DA0F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +134,7 @@
 			children = (
 				CBE007771D009D96006D366F /* Podspec Metadata */,
 				CB9C7D8C1D009CDC0058EEA3 /* CRUDEFutures */,
+				121A1BF81D6B9EEA00B0543D /* CRUDEFuturesTests */,
 				CB9C7D8B1D009CDC0058EEA3 /* Products */,
 				4E03AECA49E35CB1AC55DA0F /* Pods */,
 				013400064F7353E43FEF3E8E /* Frameworks */,
@@ -112,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				CB9C7D8A1D009CDC0058EEA3 /* CRUDEFutures.framework */,
+				121A1BF71D6B9EEA00B0543D /* CRUDEFuturesTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,6 +204,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		121A1BF61D6B9EEA00B0543D /* CRUDEFuturesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 121A1C011D6B9EEA00B0543D /* Build configuration list for PBXNativeTarget "CRUDEFuturesTests" */;
+			buildPhases = (
+				121A1BF31D6B9EEA00B0543D /* Sources */,
+				121A1BF41D6B9EEA00B0543D /* Frameworks */,
+				121A1BF51D6B9EEA00B0543D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				121A1BFE1D6B9EEA00B0543D /* PBXTargetDependency */,
+			);
+			name = CRUDEFuturesTests;
+			productName = CRUDEFuturesTests;
+			productReference = 121A1BF71D6B9EEA00B0543D /* CRUDEFuturesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CB9C7D891D009CDC0058EEA3 /* CRUDEFutures */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB9C7D921D009CDD0058EEA3 /* Build configuration list for PBXNativeTarget "CRUDEFutures" */;
@@ -196,9 +248,13 @@
 		CB9C7D811D009CDC0058EEA3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Jason Welch";
 				TargetAttributes = {
+					121A1BF61D6B9EEA00B0543D = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 					CB9C7D891D009CDC0058EEA3 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -217,11 +273,19 @@
 			projectRoot = "";
 			targets = (
 				CB9C7D891D009CDC0058EEA3 /* CRUDEFutures */,
+				121A1BF61D6B9EEA00B0543D /* CRUDEFuturesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		121A1BF51D6B9EEA00B0543D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9C7D881D009CDC0058EEA3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -267,6 +331,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		121A1BF31D6B9EEA00B0543D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				121A1BFA1D6B9EEA00B0543D /* CRUDEFuturesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CB9C7D851D009CDC0058EEA3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -290,7 +362,35 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		121A1BFE1D6B9EEA00B0543D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB9C7D891D009CDC0058EEA3 /* CRUDEFutures */;
+			targetProxy = 121A1BFD1D6B9EEA00B0543D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		121A1BFF1D6B9EEA00B0543D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = CRUDEFuturesTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonathanjulian.CRUDEFuturesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		121A1C001D6B9EEA00B0543D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = CRUDEFuturesTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jonathanjulian.CRUDEFuturesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		CB9C7D901D009CDD0058EEA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -419,6 +519,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		121A1C011D6B9EEA00B0543D /* Build configuration list for PBXNativeTarget "CRUDEFuturesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				121A1BFF1D6B9EEA00B0543D /* Debug */,
+				121A1C001D6B9EEA00B0543D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		CB9C7D841D009CDC0058EEA3 /* Build configuration list for PBXProject "CRUDEFutures" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

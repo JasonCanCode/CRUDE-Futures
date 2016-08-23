@@ -65,6 +65,9 @@ public struct CRUDE {
     /// Turn on/off the built in reporting that prints request results to your console.
     public static var shouldUseDefaultLogger = false
 
+    static var errorDomain = "CRUDE-Futures"
+    static var errorCode = 600
+
     /**
      A convenient way to set the baseURL and headers before making any API calls.
 
@@ -99,16 +102,21 @@ public struct CRUDE {
         _requestLog?(requestType, urlString.URLString, parameters, headers)
 
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
-            .validate()
+            .validate(statusCode: 200...499)
             .responseJSON { response in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 _responseLog?(response)
 
                 switch response.result {
                 case .Success:
-                    // server can return an empty response, which is ok
-                    let json = response.result.value != nil ? JSON(response.result.value!) : nil
-                    promise.success(json)
+                    if let statusCode = response.response?.statusCode where statusCode > 299 {
+                        let error = errorFromResponse(response)
+                        promise.failure(error)
+                    } else {
+                        // server can return an empty response, which is ok
+                        let json = response.result.value != nil ? JSON(response.result.value!) : nil
+                        promise.success(json)
+                    }
                 case .Failure:
                     let error = errorFromResponse(response)
                     promise.failure(error)
@@ -138,7 +146,7 @@ public struct CRUDE {
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
             guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                promise.failure(result.error ?? NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No JSON Result"]))
                 return
             }
             let object = key != nil
@@ -170,7 +178,7 @@ public struct CRUDE {
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
             guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                promise.failure(result.error ?? NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No JSON Result"]))
                 return
             }
             let objectJSON = key != nil
@@ -206,26 +214,40 @@ public struct CRUDE {
 
     internal static func errorFromResponse(network: Response<AnyObject, NSError>) -> NSError {
         if let error = network.result.error {
+            // we already have an error object
             return error
         }
         guard let response = network.response, request = network.request else {
-            return NSError(domain: "Unknown Error", code: 600, userInfo: nil)
+            // we need the network to be right to continue
+            return NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No Request or Response"])
         }
 
-        let statusCodeDescription = NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
-        var issue = statusCodeDescription
+        // default title and detail
         var title = "Error"
+        var issue = NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
 
         if let json = network.result.value, let error = JSON(json)["error"].string {
+            // there was a single error returned from the server
             issue = error
-        }
-        if let json = network.result.value where JSON(json)["errorsList"] != nil, let errorsList = JSON(json)["errorsList"].array where !errorsList.isEmpty {
+        } else if let json = network.result.value where JSON(json)["errors"] != nil, let errors = JSON(json)["errors"].array where !errors.isEmpty {
+            // there were many errors; use the first one
+            title = errors[0]["title"].stringValue
+            issue = errors[0]["detail"].stringValue
+        } else if let json = network.result.value where JSON(json)["errorsList"] != nil, let errorsList = JSON(json)["errorsList"].array where !errorsList.isEmpty {
+            // there were many errors; use the first one
             title = errorsList[0]["title"].stringValue
             issue = errorsList[0]["detail"].stringValue
         }
-        var debugInfo: [String: AnyObject] = ["request": request, "response": network.response!, "title": title, "detail": issue]
-        debugInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
-        return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
+
+        var userInfo: [String: AnyObject] = [
+            "request": request,
+            "response": response,
+            "title": title,
+            "detail": issue,
+            "StatusCode": response.statusCode
+        ]
+        userInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
+        return NSError(domain: errorDomain, code: response.statusCode, userInfo: userInfo)
     }
 
     private static var defaultLogger: CRUDEResponseLog = { network in
