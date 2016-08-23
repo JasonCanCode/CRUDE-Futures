@@ -99,7 +99,7 @@ public struct CRUDERequest {
 
         makeRequestForJSON(requestType).onComplete { result in
             guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                promise.failure(result.error ?? NSError(domain: CRUDE.errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No JSON Result"]))
                 return
             }
             let object = key != nil
@@ -129,7 +129,7 @@ public struct CRUDERequest {
 
         makeRequestForJSON(requestType).onComplete { result in
             guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                promise.failure(result.error ?? NSError(domain: CRUDE.errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No JSON result"]))
                 return
             }
             let objectJSON = key != nil

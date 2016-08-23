@@ -65,6 +65,9 @@ public struct CRUDE {
     /// Turn on/off the built in reporting that prints request results to your console.
     public static var shouldUseDefaultLogger = false
 
+    static var errorDomain = "CRUDE-Futures"
+    static var errorCode = 600
+
     /**
      A convenient way to set the baseURL and headers before making any API calls.
 
@@ -99,16 +102,21 @@ public struct CRUDE {
         _requestLog?(requestType, urlString.URLString, parameters, headers)
 
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
-            .validate()
+            .validate(statusCode: 200...599)
             .responseJSON { response in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 _responseLog?(response)
 
                 switch response.result {
                 case .Success:
-                    // server can return an empty response, which is ok
-                    let json = response.result.value != nil ? JSON(response.result.value!) : nil
-                    promise.success(json)
+                    if let statusCode = response.response?.statusCode where statusCode >= 400 {
+                        let error = errorFromResponse(response)
+                        promise.failure(error)
+                    } else {
+                        // server can return an empty response, which is ok
+                        let json = response.result.value != nil ? JSON(response.result.value!) : nil
+                        promise.success(json)
+                    }
                 case .Failure:
                     let error = errorFromResponse(response)
                     promise.failure(error)
@@ -138,7 +146,7 @@ public struct CRUDE {
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
             guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                promise.failure(result.error ?? NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No JSON Result"]))
                 return
             }
             let object = key != nil
@@ -170,7 +178,7 @@ public struct CRUDE {
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
             guard let json = result.value else {
-                promise.failure(result.error ?? NSError(domain: "Unknown Error", code: 600, userInfo: nil))
+                promise.failure(result.error ?? NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No JSON Result"]))
                 return
             }
             let objectJSON = key != nil
@@ -206,26 +214,59 @@ public struct CRUDE {
 
     internal static func errorFromResponse(network: Response<AnyObject, NSError>) -> NSError {
         if let error = network.result.error {
+            // we already have an error object
             return error
         }
-        guard let response = network.response, request = network.request else {
-            return NSError(domain: "Unknown Error", code: 600, userInfo: nil)
+        guard let response = network.response else {
+            // we need the network to be right to continue
+            return NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No Response Object"])
         }
 
-        let statusCodeDescription = NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
-        var issue = statusCodeDescription
-        var title = "Error"
+        var errorMessage: String?
 
         if let json = network.result.value, let error = JSON(json)["error"].string {
-            issue = error
+            // there was a single error returned from the server
+            errorMessage = error
+        } else if let json = network.result.value where JSON(json)["errors"] != nil, let errors = JSON(json)["errors"].dictionary where !errors.isEmpty {
+            // there were many errors
+            // parse Railsy restful form-field-named errors
+            var fullMessages: [String] = []
+            for (field, messages) in errors {
+                if let messages = messages.array {
+                    for message in messages {
+                        if let message = message.string {
+                            // If the message starts with a capitalized letter, it can
+                            // stand alone without a field name
+                            let firstLetter = message.substringToIndex(message.startIndex.advancedBy(1))
+                            if firstLetter.uppercaseString == firstLetter {
+                                fullMessages.append(message)
+                            } else {
+                                var prettyFieldName = field.stringByReplacingOccurrencesOfString("_", withString: " ", options: .LiteralSearch, range: nil)
+                                prettyFieldName.replaceRange(prettyFieldName.startIndex...prettyFieldName.startIndex, with: String(prettyFieldName[prettyFieldName.startIndex]).uppercaseString)
+                                fullMessages.append("\(prettyFieldName) \(message)")
+                            }
+                        } else {
+                            // this is not a string: skip it
+                        }
+                    }
+                } else if let message = messages.string {
+                    // single error message for this field
+                    fullMessages.append(message)
+                }
+            }
+            if fullMessages.count > 1 {
+                errorMessage = fullMessages.joinWithSeparator("\n\n")
+            } else if fullMessages.count == 1 {
+                errorMessage = fullMessages.first
+            }
         }
-        if let json = network.result.value where JSON(json)["errorsList"] != nil, let errorsList = JSON(json)["errorsList"].array where !errorsList.isEmpty {
-            title = errorsList[0]["title"].stringValue
-            issue = errorsList[0]["detail"].stringValue
-        }
-        var debugInfo: [String: AnyObject] = ["request": request, "response": network.response!, "title": title, "detail": issue]
-        debugInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
-        return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
+
+        var userInfo: [String: AnyObject] = [
+            "response": response,
+            "StatusCode": response.statusCode
+        ]
+        userInfo[NSLocalizedDescriptionKey] = errorMessage ?? NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
+        return NSError(domain: errorDomain, code: response.statusCode, userInfo: userInfo)
     }
 
     private static var defaultLogger: CRUDEResponseLog = { network in
