@@ -44,19 +44,11 @@ class CRUDEFuturesTests: XCTestCase {
         let asyncExpectation = expectationWithDescription("httpRequest")
 
         CRUDE.request(.GET, "http://httpbin.org/status/500").onSuccess { json in
-            XCTFail()
+            XCTFail("expected failure")
         }.onFailure { error in
             print(error)
             print(error.localizedDescription)
             print(error.localizedFailureReason)
-
-            // AlamoFire returns status code like this
-            if let httpStatusCode = error.userInfo["StatusCode"] as? Int {
-                print(httpStatusCode)
-                XCTAssertEqual(httpStatusCode, 500)
-            } else {
-                XCTFail("no StatusCode in error object")
-            }
         }.onComplete {_ in
             asyncExpectation.fulfill()
         }
@@ -68,7 +60,7 @@ class CRUDEFuturesTests: XCTestCase {
         let asyncExpectation = expectationWithDescription("httpRequest")
 
         CRUDE.request(.GET, "http://kaishgerefcjndlss.com/").onSuccess { json in
-            XCTFail()
+            XCTFail("expected failure")
         }.onFailure { error in
             print(error.localizedDescription)
             print(error.localizedFailureReason)
@@ -86,19 +78,19 @@ class CRUDEFuturesTests: XCTestCase {
         CRUDE.request(.GET, CRUDE.baseURL + "carts").onSuccess { json in
             XCTAssert(!json.isEmpty)
         }.onFailure { error in
-            XCTFail()
+            XCTFail(error.localizedDescription)
         }.onComplete {_ in
             asyncExpectation.fulfill()
         }
         waitForExpectationsWithTimeout(timeoutSeconds, handler: nil)
     }
 
-    /// Test failure against an orderup.com endpoint, make sure the errors are parsed
-    func testProcessErrorsFromServer() {
+    /// Test failure against an orderup.com endpoint, make sure the single error is parsed
+    func testProcessErrorFromServer() {
         let asyncExpectation = expectationWithDescription("httpRequest")
 
         CRUDE.request(.POST, CRUDE.baseURL + "session", parameters: ["email": "user@groupon.com", "password": "secret"]).onSuccess { json in
-            XCTFail()
+            XCTFail("expected failure")
         }.onFailure { error in
             print(error)
             print(error.localizedDescription)
@@ -110,11 +102,36 @@ class CRUDEFuturesTests: XCTestCase {
             print(httpStatusCode)
             XCTAssert(httpStatusCode == 422)
 
-            // CRUDE return of "error"in json response
-            let errorMessageTitle = error.userInfo["title"] as? String
-            XCTAssertNotNil(errorMessageTitle)
-            let errorMessageDetail = error.userInfo["detail"] as? String
-            XCTAssertNotNil(errorMessageDetail)
+            // CRUDE return of "error" or "errors" in json response
+            let errorMessage = error.localizedDescription
+            XCTAssertNotNil(errorMessage)
+
+        }.onComplete {_ in
+            asyncExpectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(timeoutSeconds, handler: nil)
+    }
+
+    /// Test failure against an orderup.com endpoint, make sure the multiple errors are parsed
+    func testProcessErrorsFromServer() {
+        let asyncExpectation = expectationWithDescription("httpRequest")
+
+        CRUDE.request(.POST, CRUDE.baseURL + "customer").onSuccess { json in
+            XCTFail("expected failure")
+        }.onFailure { error in
+            print(error)
+            print(error.localizedDescription)
+            print(error.localizedFailureReason)
+
+            // AlamoFire returns status code like this, so we do too
+            let httpStatusCode = error.userInfo["StatusCode"] as? Int
+            XCTAssertNotNil(httpStatusCode)
+            print(httpStatusCode)
+            XCTAssert(httpStatusCode == 422)
+
+            // CRUDE return of "error" or "errors" in json response
+            let errorMessage = error.localizedDescription
+            XCTAssertNotNil(errorMessage)
 
         }.onComplete {_ in
             asyncExpectation.fulfill()

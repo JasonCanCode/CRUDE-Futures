@@ -102,14 +102,14 @@ public struct CRUDE {
         _requestLog?(requestType, urlString.URLString, parameters, headers)
 
         Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
-            .validate(statusCode: 200...499)
+            .validate(statusCode: 200...599)
             .responseJSON { response in
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 _responseLog?(response)
 
                 switch response.result {
                 case .Success:
-                    if let statusCode = response.response?.statusCode where statusCode > 299 {
+                    if let statusCode = response.response?.statusCode where statusCode >= 400 {
                         let error = errorFromResponse(response)
                         promise.failure(error)
                     } else {
@@ -217,36 +217,55 @@ public struct CRUDE {
             // we already have an error object
             return error
         }
-        guard let response = network.response, request = network.request else {
+        guard let response = network.response else {
             // we need the network to be right to continue
-            return NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No Request or Response"])
+            return NSError(domain: errorDomain, code: CRUDE.errorCode, userInfo: [NSLocalizedDescriptionKey: "No Response Object"])
         }
 
-        // default title and detail
-        var title = "Error"
-        var issue = NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
+        var errorMessage: String?
 
         if let json = network.result.value, let error = JSON(json)["error"].string {
             // there was a single error returned from the server
-            issue = error
-        } else if let json = network.result.value where JSON(json)["errors"] != nil, let errors = JSON(json)["errors"].array where !errors.isEmpty {
-            // there were many errors; use the first one
-            title = errors[0]["title"].stringValue
-            issue = errors[0]["detail"].stringValue
-        } else if let json = network.result.value where JSON(json)["errorsList"] != nil, let errorsList = JSON(json)["errorsList"].array where !errorsList.isEmpty {
-            // there were many errors; use the first one
-            title = errorsList[0]["title"].stringValue
-            issue = errorsList[0]["detail"].stringValue
+            errorMessage = error
+        } else if let json = network.result.value where JSON(json)["errors"] != nil, let errors = JSON(json)["errors"].dictionary where !errors.isEmpty {
+            // there were many errors
+            // parse Railsy restful form-field-named errors
+            var fullMessages: [String] = []
+            for (field, messages) in errors {
+                if let messages = messages.array {
+                    for message in messages {
+                        if let message = message.string {
+                            // If the message starts with a capitalized letter, it can
+                            // stand alone without a field name
+                            let firstLetter = message.substringToIndex(message.startIndex.advancedBy(1))
+                            if firstLetter.uppercaseString == firstLetter {
+                                fullMessages.append(message)
+                            } else {
+                                var prettyFieldName = field.stringByReplacingOccurrencesOfString("_", withString: " ", options: .LiteralSearch, range: nil)
+                                prettyFieldName.replaceRange(prettyFieldName.startIndex...prettyFieldName.startIndex, with: String(prettyFieldName[prettyFieldName.startIndex]).uppercaseString)
+                                fullMessages.append("\(prettyFieldName) \(message)")
+                            }
+                        } else {
+                            // this is not a string: skip it
+                        }
+                    }
+                } else if let message = messages.string {
+                    // single error message for this field
+                    fullMessages.append(message)
+                }
+            }
+            if fullMessages.count > 1 {
+                errorMessage = fullMessages.joinWithSeparator("\n\n")
+            } else if fullMessages.count == 1 {
+                errorMessage = fullMessages.first
+            }
         }
 
         var userInfo: [String: AnyObject] = [
-            "request": request,
             "response": response,
-            "title": title,
-            "detail": issue,
             "StatusCode": response.statusCode
         ]
-        userInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
+        userInfo[NSLocalizedDescriptionKey] = errorMessage ?? NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
         return NSError(domain: errorDomain, code: response.statusCode, userInfo: userInfo)
     }
 
