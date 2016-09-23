@@ -1,19 +1,21 @@
 PODS:
-  - Alamofire (3.4.0)
+  - Alamofire (3.5.0)
   - BrightFutures (4.1.0):
     - Result (~> 2.0)
   - Result (2.0.0)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.4)
+  - Alamofire (~> 3.5)
   - BrightFutures (~> 4.1)
   - SwiftyJSON (~> 2.3)
 
 SPEC CHECKSUMS:
-  Alamofire: c19a627cefd6a95f840401c49ab1f124e07f54ee
+  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
   BrightFutures: e18b83fd6fa8562ceb9902ee609f0de23b0ee110
   Result: 9e75e1111c774c6ac594e14907b15057053a7959
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: fb0fd257b96c50b2e9f86a1b355cd99a30382a5a
+
+COCOAPODS: 1.0.1
