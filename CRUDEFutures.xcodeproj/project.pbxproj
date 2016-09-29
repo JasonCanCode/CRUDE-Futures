@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27BE08BC19B3E795ACB92901 /* Pods_CRUDEFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */; };
 		CB0D4F8B1D09DAC400FDBF61 /* JSONAttributable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */; };
 		CB1F2FBC1D3E9C2E0098C7C8 /* CRUDERequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1F2FBB1D3E9C2E0098C7C8 /* CRUDERequest.swift */; };
 		CB1F2FBE1D3EA2CD0098C7C8 /* CRUDERequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1F2FBD1D3EA2CD0098C7C8 /* CRUDERequestType.swift */; };
@@ -29,11 +28,12 @@
 		CBE0079E1D00A2C3006D366F /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0079A1D00A2C3006D366F /* Result.framework */; };
 		CBE0079F1D00A2C3006D366F /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */; };
 		CBFE264F1D05BAB7008ADC81 /* CRUDEMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFE264E1D05BAB7008ADC81 /* CRUDEMappable.swift */; };
+		F7672EDE20034B549C628528 /* Pods_CRUDEFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B090129A8E8767BE8659A1F /* Pods_CRUDEFutures.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2BAC493EF3E177C44D7FB971 /* Pods-CRUDEFutures.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.release.xcconfig"; sourceTree = "<group>"; };
-		750F85DEFB2F47CA1907B5F1 /* Pods-CRUDEFutures.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.debug.xcconfig"; sourceTree = "<group>"; };
+		0B185EAB13F736299F6F1918 /* Pods-CRUDEFutures.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.debug.xcconfig"; sourceTree = "<group>"; };
+		2B090129A8E8767BE8659A1F /* Pods_CRUDEFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CRUDEFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0D4F8A1D09DAC400FDBF61 /* JSONAttributable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONAttributable.swift; path = Protocols/JSONAttributable.swift; sourceTree = "<group>"; };
 		CB1F2FBB1D3E9C2E0098C7C8 /* CRUDERequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDERequest.swift; sourceTree = "<group>"; };
 		CB1F2FBD1D3EA2CD0098C7C8 /* CRUDERequestType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDERequestType.swift; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 		CBE0079A1D00A2C3006D366F /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/Result.framework"; sourceTree = "<group>"; };
 		CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "../../Library/Developer/Xcode/DerivedData/CRUDEFutures-cewxadxvhjblfzbopqntvarwataz/Build/Products/Debug-iphonesimulator/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		CBFE264E1D05BAB7008ADC81 /* CRUDEMappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDEMappable.swift; sourceTree = "<group>"; };
-		D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CRUDEFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECBB627BF05A9E54CA675404 /* Pods-CRUDEFutures.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CRUDEFutures.release.xcconfig"; path = "Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,7 @@
 				CBE0079D1D00A2C3006D366F /* BrightFutures.framework in Frameworks */,
 				CBE0079E1D00A2C3006D366F /* Result.framework in Frameworks */,
 				CBE0079F1D00A2C3006D366F /* SwiftyJSON.framework in Frameworks */,
-				27BE08BC19B3E795ACB92901 /* Pods_CRUDEFutures.framework in Frameworks */,
+				F7672EDE20034B549C628528 /* Pods_CRUDEFutures.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,16 +83,16 @@
 				CBE007991D00A2C3006D366F /* BrightFutures.framework */,
 				CBE0079A1D00A2C3006D366F /* Result.framework */,
 				CBE0079B1D00A2C3006D366F /* SwiftyJSON.framework */,
-				D824D51A095976DE711BDE8D /* Pods_CRUDEFutures.framework */,
+				2B090129A8E8767BE8659A1F /* Pods_CRUDEFutures.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		4E03AECA49E35CB1AC55DA0F /* Pods */ = {
+		C3A6AD748E989CAE96FA15A6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				750F85DEFB2F47CA1907B5F1 /* Pods-CRUDEFutures.debug.xcconfig */,
-				2BAC493EF3E177C44D7FB971 /* Pods-CRUDEFutures.release.xcconfig */,
+				0B185EAB13F736299F6F1918 /* Pods-CRUDEFutures.debug.xcconfig */,
+				ECBB627BF05A9E54CA675404 /* Pods-CRUDEFutures.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -103,8 +103,8 @@
 				CBE007771D009D96006D366F /* Podspec Metadata */,
 				CB9C7D8C1D009CDC0058EEA3 /* CRUDEFutures */,
 				CB9C7D8B1D009CDC0058EEA3 /* Products */,
-				4E03AECA49E35CB1AC55DA0F /* Pods */,
 				013400064F7353E43FEF3E8E /* Frameworks */,
+				C3A6AD748E989CAE96FA15A6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -174,12 +174,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB9C7D921D009CDD0058EEA3 /* Build configuration list for PBXNativeTarget "CRUDEFutures" */;
 			buildPhases = (
-				D63393EC9406EF286C4F538D /* Check Pods Manifest.lock */,
+				81917146CEB5B6BC7A78D765 /* [CP] Check Pods Manifest.lock */,
 				CB9C7D851D009CDC0058EEA3 /* Sources */,
 				CB9C7D861D009CDC0058EEA3 /* Frameworks */,
 				CB9C7D871D009CDC0058EEA3 /* Headers */,
 				CB9C7D881D009CDC0058EEA3 /* Resources */,
-				9C4023F7DC88591F9445BE93 /* Copy Pods Resources */,
+				CA75718AA7A2D92B92C1F474 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -196,11 +196,12 @@
 		CB9C7D811D009CDC0058EEA3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Jason Welch";
 				TargetAttributes = {
 					CB9C7D891D009CDC0058EEA3 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -234,34 +235,34 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9C4023F7DC88591F9445BE93 /* Copy Pods Resources */ = {
+		81917146CEB5B6BC7A78D765 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D63393EC9406EF286C4F538D /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CA75718AA7A2D92B92C1F474 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CRUDEFutures/Pods-CRUDEFutures-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -305,8 +306,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -334,6 +337,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -354,8 +358,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -375,6 +381,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -384,8 +392,10 @@
 		};
 		CB9C7D931D009CDD0058EEA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 750F85DEFB2F47CA1907B5F1 /* Pods-CRUDEFutures.debug.xcconfig */;
+			baseConfigurationReference = 0B185EAB13F736299F6F1918 /* Pods-CRUDEFutures.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -396,13 +406,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jasoncancode.CRUDEFutures;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
 		CB9C7D941D009CDD0058EEA3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2BAC493EF3E177C44D7FB971 /* Pods-CRUDEFutures.release.xcconfig */;
+			baseConfigurationReference = ECBB627BF05A9E54CA675404 /* Pods-CRUDEFutures.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -413,6 +426,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jasoncancode.CRUDEFutures;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
