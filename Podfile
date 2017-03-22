@@ -1,10 +1,10 @@
-platform :ios, '8.0'
+platform :ios, '9.0'
 use_frameworks!
 
 target 'CRUDEFutures' do
- pod 'Alamofire', '~> 3.5.0'
- pod 'SwiftyJSON', '~> 2.4.0'
- pod 'BrightFutures', '~> 4.1.1'
- pod 'Result', '~> 2.0'
+ pod 'Alamofire', '~> 4.4.0'
+ pod 'SwiftyJSON', '~> 3.1.4'
+ pod 'BrightFutures', '~> 5.0'
+ pod 'Result', '~> 3.1'
 end
 

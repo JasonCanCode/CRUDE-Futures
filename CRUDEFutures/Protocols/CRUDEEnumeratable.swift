@@ -13,7 +13,7 @@ public protocol CRUDEEnumeratable: JSONConvertable {
     static var path: String { get }
     static var collectionKey: String? { get }
     static var enumeratePath: String { get }
-    static func enumerateFromServer(queryItems: [String: AnyObject]?) -> Future<[Self], NSError>
+    static func enumerateFromServer(_ queryItems: [String: AnyObject]?) -> Future<[Self], NSError>
 }
 
 extension CRUDEEnumeratable {
@@ -31,7 +31,7 @@ extension CRUDEEnumeratable {
 
      - parameter queryItems: Optional specifications you may send with your request.
      */
-    public static func enumerateFromServer(queryItems: [String: AnyObject]? = nil) -> Future<[Self], NSError> {
+    public static func enumerateFromServer(_ queryItems: [String: AnyObject]? = nil) -> Future<[Self], NSError> {
         return CRUDE.requestObjectsArray(.GET, enumeratePath, parameters: queryItems, key: collectionKey)
     }
 }

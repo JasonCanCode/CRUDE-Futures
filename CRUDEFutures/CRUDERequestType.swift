@@ -12,7 +12,7 @@ import Alamofire
 public enum CRUDERequestType: String {
     case GET, POST, PUT, DELETE
 
-    internal var amMethod: Alamofire.Method {
-        return Alamofire.Method(rawValue: self.rawValue)!
+    internal var amMethod: Alamofire.HTTPMethod {
+        return Alamofire.HTTPMethod(rawValue: self.rawValue)!
     }
 }

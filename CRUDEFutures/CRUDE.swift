@@ -16,7 +16,7 @@ public typealias HTTPQueryParameters = [String: AnyObject]?
 /// Used to log the request pre-flight
 public typealias CRUDERequestLog = (CRUDERequestType, String, HTTPQueryParameters, HTTPHeaders) -> Void
 /// A block that receives a request type and a genereic Alamofire Response for debug logging purposes
-public typealias CRUDEResponseLog = (Response<AnyObject, NSError>) -> Void
+public typealias CRUDEResponseLog = (DataResponse<Any>) -> Void
 
 private var _baseURL = ""
 private var _headers: HTTPHeaders = [:]
@@ -44,22 +44,22 @@ public struct CRUDE {
         return _headers
     }
 
-    public static func setBaseURL(baseURL: String) {
+    public static func setBaseURL(_ baseURL: String) {
         _baseURL = baseURL
     }
 
-    public static func setHeaders(headers: HTTPHeaders) {
+    public static func setHeaders(_ headers: HTTPHeaders) {
         _headers = headers
     }
 
-    public static func setHeaderValue(value: String?, forKey key: String) {
+    public static func setHeaderValue(_ value: String?, forKey key: String) {
         _headers[key] = value
     }
 
-    public static func setRequestLoggingBlock(block: CRUDERequestLog) {
+    public static func setRequestLoggingBlock(_ block: @escaping CRUDERequestLog) {
         _requestLog = block
     }
-    public static func setResponseLoggingBlock(block: CRUDEResponseLog) {
+    public static func setResponseLoggingBlock(_ block: @escaping CRUDEResponseLog) {
         _customResponseLogger = block
     }
     /// Turn on/off the built in reporting that prints request results to your console.
@@ -72,7 +72,7 @@ public struct CRUDE {
      - parameter headers:   Sent with every CRUDE API request
      - parameter logResult: An optional block used for logging the outcome of a request.
      */
-    public static func configure(baseURL: String, headers: HTTPHeaders, responseLoggingBlock logResult: CRUDEResponseLog? = nil) {
+    public static func configure(_ baseURL: String, headers: HTTPHeaders, responseLoggingBlock logResult: CRUDEResponseLog? = nil) {
         _baseURL = baseURL
         _headers = headers
         _customResponseLogger = logResult
@@ -87,29 +87,29 @@ public struct CRUDE {
 
      - returns: A Future promising a JSON object `onSuccess` or an NSError `onFailure`.
      */
-    public static func request(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil) -> Future<JSON, NSError> {
+    public static func request(_ requestType: CRUDERequestType, _ urlString: String, parameters: HTTPQueryParameters = nil) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
         let encoding: ParameterEncoding = requestType != .GET
-            ? .JSON
-            : .URLEncodedInURL
+            ? JSONEncoding()
+            : URLEncoding()
 
-        _requestLog?(requestType, urlString.URLString, parameters, headers)
+        _requestLog?(requestType, urlString, parameters, headers)
 
-        Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: _headers)
+        Alamofire.request(urlString, method: requestType.amMethod, parameters: parameters, encoding: encoding, headers: _headers)
             .validate()
             .responseJSON { response in
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 _responseLog?(response)
 
                 switch response.result {
-                case .Success:
+                case .success:
                     // server can return an empty response, which is ok
-                    let json = response.result.value != nil ? JSON(response.result.value!) : nil
+                    let json = response.result.value != nil ? JSON(response.result.value!) : JSON.null
                     promise.success(json)
-                case .Failure:
+                case .failure:
                     let error = errorFromResponse(response)
                     promise.failure(error)
                 }
@@ -133,7 +133,7 @@ public struct CRUDE {
 
      - returns: A Future promising a JSONConvertable object `onSuccess` or an NSError `onFailure`.
      */
-    public static func requestObject<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil, key: String? = nil) -> Future<T, NSError> {
+    public static func requestObject<T: JSONConvertable>(_ requestType: CRUDERequestType, _ urlString: String, parameters: HTTPQueryParameters = nil, key: String? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
@@ -165,7 +165,7 @@ public struct CRUDE {
 
      - returns: A Future promising an array of JSONConvertable objects `onSuccess` or an NSError `onFailure`.
      */
-    public static func requestObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil, key: String? = nil) -> Future<[T], NSError> {
+    public static func requestObjectsArray<T: JSONConvertable>(_ requestType: CRUDERequestType, _ urlString: String, parameters: HTTPQueryParameters = nil, key: String? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
@@ -191,7 +191,7 @@ public struct CRUDE {
 
      - returns: A Future promising an `Okay` object `onSuccess` or an NSError  object `onFailure`
      */
-    public static func requestForSuccess(requestType: CRUDERequestType, _ urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil) -> Future<Okay, NSError> {
+    public static func requestForSuccess(_ requestType: CRUDERequestType, _ urlString: String, parameters: HTTPQueryParameters = nil) -> Future<Okay, NSError> {
         let promise = Promise<Okay, NSError>()
 
         request(requestType, urlString, parameters: parameters).onComplete { result in
@@ -204,52 +204,52 @@ public struct CRUDE {
         return promise.future
     }
 
-    internal static func errorFromResponse(network: Response<AnyObject, NSError>) -> NSError {
+    internal static func errorFromResponse(_ network: DataResponse<Any>) -> NSError {
         if let error = network.result.error {
-            return error
+            return error as NSError
         }
-        guard let response = network.response, request = network.request else {
+        guard let response = network.response, let urlString = network.request?.url?.absoluteString else {
             return NSError(domain: "Unknown Error", code: 600, userInfo: nil)
         }
 
-        let statusCodeDescription = NSHTTPURLResponse.localizedStringForStatusCode(response.statusCode)
+        let statusCodeDescription = HTTPURLResponse.localizedString(forStatusCode: response.statusCode)
         var issue = statusCodeDescription
         var title = "Error"
 
         if let json = network.result.value, let error = JSON(json)["error"].string {
             issue = error
         }
-        if let json = network.result.value where JSON(json)["errorsList"] != nil, let errorsList = JSON(json)["errorsList"].array where !errorsList.isEmpty {
+        if let json = network.result.value, JSON(json)["errorsList"] != JSON.null, let errorsList = JSON(json)["errorsList"].array, !errorsList.isEmpty {
             title = errorsList[0]["title"].stringValue
             issue = errorsList[0]["detail"].stringValue
         }
-        var debugInfo: [String: AnyObject] = ["request": request, "response": network.response!, "title": title, "detail": issue]
+        var debugInfo: [String: Any] = ["request": urlString, "response": network.response!, "title": title, "detail": issue]
         debugInfo[NSLocalizedDescriptionKey] = "\(title): \(issue)"
         return NSError(domain: issue, code: (network.response?.statusCode ?? -1), userInfo: debugInfo)
     }
 
-    private static var defaultLogger: CRUDEResponseLog = { network in
-        let type = network.request?.HTTPMethod ?? "UNKNOWN"
+    fileprivate static var defaultLogger: CRUDEResponseLog = { network in
+        let type = network.request?.httpMethod ?? "UNKNOWN"
         var message = "CRUDE request \(type) "
-        if let urlString = network.request?.URLString {
+        if let urlString = network.request?.url?.absoluteString {
             message += "sent to \(urlString) "
         }
-        guard let response = network.response where response.statusCode < 300 else {
+        guard let response = network.response , response.statusCode < 300 else {
             message += "FAILED with error: \(CRUDE.errorFromResponse(network))"
             print(message)
             return
         }
         // server can return an empty response, which is ok
-        let json = network.result.value != nil ? JSON(network.result.value!) : nil
+        let json = network.result.value != nil ? JSON(network.result.value!) : JSON.null
         message += "successfully received JSON:\n\(json)"
         print(message)
     }
 
-    private static func queryString(params: HTTPQueryParameters) -> String {
+    private static func queryString(_ params: HTTPQueryParameters) -> String {
         guard let params = params else {
             return ""
         }
         let keyValueStrings: [String] = params.map { "\($0.0)=\($0.1)" }
-        return "?\(keyValueStrings.joinWithSeparator("&"))"
+        return "?\(keyValueStrings.joined(separator: "&"))"
     }
 }

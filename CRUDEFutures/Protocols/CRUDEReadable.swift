@@ -15,8 +15,8 @@ public protocol CRUDEReadable: CRUDERequestable {
     var readPath: String { get }
     /// The primary key for referencing an instance of this object on a sever. 
     var id: Int { get }
-    func readFromServer(queryItems: [String: AnyObject]?) -> Future<Self, NSError>
-    static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]?) -> Future<Self, NSError>
+    func readFromServer(_ queryItems: [String: AnyObject]?) -> Future<Self, NSError>
+    static func readFromServerWithId(_ idNumber: Int, queryItems: [String: AnyObject]?) -> Future<Self, NSError>
 }
 
 extension CRUDEReadable {
@@ -32,7 +32,7 @@ extension CRUDEReadable {
 
      - parameter queryItems: Optional specifications you may send with your request.
      */
-    public func readFromServer(queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
+    public func readFromServer(_ queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
         return CRUDE.requestObject(.GET, readPath, parameters: queryItems, key: Self.objectKey) as Future<Self, NSError>
     }
 
@@ -42,7 +42,7 @@ extension CRUDEReadable {
      - parameter idNumber:   Identifier for a specific entity
      - parameter queryItems: Optional specifications you may send with your request.
      */
-    public static func readFromServerWithId(idNumber: Int, queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
+    public static func readFromServerWithId(_ idNumber: Int, queryItems: [String: AnyObject]? = nil) -> Future<Self, NSError> {
         let path = CRUDE.baseURL + "\(Self.path)/\(idNumber)"
         return CRUDE.requestObject(.GET, path, parameters: queryItems, key: objectKey) as Future<Self, NSError>
     }

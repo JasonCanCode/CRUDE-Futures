@@ -23,10 +23,10 @@ import BrightFutures
  */
 public struct CRUDERequest {
 
-    public var urlString: URLStringConvertible
+    public var urlString: String
     public var parameters: HTTPQueryParameters = nil
     public var headers: [String: String]? = nil
-    private var request: Request? = nil
+    private var request: DataRequest? = nil
 
     /**
      Initialize the same way you would use the request function. The `urlString` is a must, with the option to provide `parameters` and/or `headers`.
@@ -37,7 +37,7 @@ public struct CRUDERequest {
      - parameter parameters:  Optionally include query or attribute items.
      - parameter headers:    Provide if the headers for this request differ from those used by CRUDE. If headers are not provided, the request will default to the headers set when CRUDE was configured.
      */
-    public init(urlString: URLStringConvertible, parameters: HTTPQueryParameters = nil, headers: [String: String]? = nil) {
+    public init(urlString: String, parameters: HTTPQueryParameters = nil, headers: [String: String]? = nil) {
         self.urlString = urlString
         self.parameters = parameters
         self.headers = headers
@@ -50,29 +50,29 @@ public struct CRUDERequest {
 
      - returns: A Future promising a JSON object `onSuccess` or an NSError `onFailure`.
      */
-    public mutating func makeRequestForJSON(requestType: CRUDERequestType) -> Future<JSON, NSError> {
+    public mutating func makeRequestForJSON(_ requestType: CRUDERequestType) -> Future<JSON, NSError> {
 
         let promise = Promise<JSON, NSError>()
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
         let encoding: ParameterEncoding = requestType != .GET
-            ? .JSON
-            : .URLEncodedInURL
+            ? JSONEncoding()
+            : URLEncoding()
         let headers = self.headers ?? CRUDE.headers
 
-        _requestLog?(requestType, urlString.URLString, parameters, headers)
+        _requestLog?(requestType, urlString, parameters, headers)
 
-        request = Alamofire.request(requestType.amMethod, urlString, parameters: parameters, encoding: encoding, headers: headers)
+        request = Alamofire.request(urlString, method: requestType.amMethod, parameters: parameters, encoding: encoding, headers: headers)
         request!.responseJSON { response in
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             _responseLog?(response)
 
             switch response.result {
-            case .Success:
+            case .success:
                 // server can return an empty response, which is ok
-                let json = response.result.value != nil ? JSON(response.result.value!) : nil
+                let json = response.result.value != nil ? JSON(response.result.value!) : JSON.null
                 promise.success(json)
-            case .Failure:
+            case .failure:
                 let error = CRUDE.errorFromResponse(response)
                 promise.failure(error)
             }
@@ -94,7 +94,7 @@ public struct CRUDERequest {
 
      - returns: A Future promising a JSONConvertable object `onSuccess` or an NSError `onFailure`.
      */
-    public mutating func makeRequestForObject<T: JSONConvertable>(requestType: CRUDERequestType, key: String? = nil) -> Future<T, NSError> {
+    public mutating func makeRequestForObject<T: JSONConvertable>(_ requestType: CRUDERequestType, key: String? = nil) -> Future<T, NSError> {
         let promise = Promise<T, NSError>()
 
         makeRequestForJSON(requestType).onComplete { result in
@@ -124,7 +124,7 @@ public struct CRUDERequest {
 
      - returns: A Future promising an array of JSONConvertable objects `onSuccess` or an NSError `onFailure`.
      */
-    public mutating func makeRequestForObjectsArray<T: JSONConvertable>(requestType: CRUDERequestType, withKey key: String? = nil) -> Future<[T], NSError> {
+    public mutating func makeRequestForObjectsArray<T: JSONConvertable>(_ requestType: CRUDERequestType, withKey key: String? = nil) -> Future<[T], NSError> {
         let promise = Promise<[T], NSError>()
 
         makeRequestForJSON(requestType).onComplete { result in

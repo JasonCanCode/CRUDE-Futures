@@ -13,8 +13,8 @@ import BrightFutures
  */
 public protocol CRUDECreatable: CRUDERequestable {
     static var createPath: String { get }
-    static func createOnServer(attributes: [String: AnyObject]) -> Future<Self, NSError>
-    static func createOnServerOkay(attributes: [String: AnyObject]) -> Future<Okay, NSError>
+    static func createOnServer(_ attributes: [String: AnyObject]) -> Future<Self, NSError>
+    static func createOnServerOkay(_ attributes: [String: AnyObject]) -> Future<Okay, NSError>
 }
 
 extension CRUDECreatable {
@@ -26,12 +26,12 @@ extension CRUDECreatable {
     public static var createPath: String { return CRUDE.baseURL + path }
 
     /// Provide `attributes` and receive a new data object.
-    public static func createOnServer(attributes: [String: AnyObject]) -> Future<Self, NSError> {
+    public static func createOnServer(_ attributes: [String: AnyObject]) -> Future<Self, NSError> {
         return CRUDE.requestObject(.POST, createPath, parameters: attributes, key: objectKey) as Future<Self, NSError>
     }
 
     /// A simple entity creation that ignores the result of the request
-    public static func createOnServerOkay(attributes: [String: AnyObject]) -> Future<Okay, NSError> {
+    public static func createOnServerOkay(_ attributes: [String: AnyObject]) -> Future<Okay, NSError> {
         return CRUDE.requestForSuccess(.POST, createPath, parameters: attributes)
     }
 }
